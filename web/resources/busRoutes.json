@@ -1,0 +1,41 @@
+[
+    {
+        "routeName" : "Km. 4 - Circunvalación 2 - Estación El Varillal - HUM",
+        "stops" : [
+            "Hospital Universitario",
+            "Medicina",
+            "Ipsfa",
+            "Urbanización Sucre",
+            "Sistema Regional",
+            "El Reloj",
+            "El Reloj II",
+            "Cementerio I",
+            "Cementerio II",
+            "Amparo",
+            "Cumbres de Maracaibo",
+            "Buena Vista",
+            "Valle Alto",
+            "Hospital Madre Rafols",
+            "C-2",
+            "El Turf",
+            "Ogaret",
+            "Barrio Bolivar",
+            "El Tránsito",
+            "Estación El Varillal",
+            "José G. Hernández",
+            "La Matancera",
+            "El Cardonal",
+            "De Candido",
+            "Palacio de Eventos",
+            "Centro Sur",
+            "Los Mangos",
+            "Petrocasa",
+            "Los Silos",
+            "San Javier II",
+            "Los Churupos",
+            "Sierra Maestra I",
+            "Sierra Maestra II",
+            "Sierra Maestra III"
+        ]
+    }
+]
