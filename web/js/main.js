@@ -38,7 +38,9 @@ function loadBusRoutes() {
 function drawMap() {
     
     var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 8
+        center: {lat: 10.644268, lng: -71.673042},
+        zoom: 14
     });
 }
+
+//10.6445323,-71.669355,14
