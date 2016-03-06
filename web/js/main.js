@@ -17,12 +17,13 @@ function main() {
 }
 
 function goToRoutePlanning() {
-    
+    'use strict';
     window.location.href = "planRoute.jsp";
     
 }
 
 function loadBusRoutes() {
+    'use strict';
     
     $.get({url: "resources/busRoutes.json"})
     .done(function(routes) {
@@ -36,11 +37,10 @@ function loadBusRoutes() {
 }
 
 function drawMap() {
+    'use strict';
     
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 10.644268, lng: -71.673042},
         zoom: 14
     });
 }
-
-//10.6445323,-71.669355,14
