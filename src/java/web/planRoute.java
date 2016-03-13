@@ -54,7 +54,7 @@ public class planRoute extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             switch(request.getServletPath()) {
-                case "/doPlanRoute":
+                case "/doRoutePlan":
                     doPlanRoute(request, out);
                     break;
                 case "/avenues":
@@ -68,7 +68,7 @@ public class planRoute extends HttpServlet {
     }
     
     protected void doPlanRoute(HttpServletRequest request, PrintWriter out) {
-        out.write("{}");
+        out.write("{ \"message\": \"No routes yet.\" }");
     }
     
     protected void getAvenues(HttpServletRequest request, PrintWriter out) {
