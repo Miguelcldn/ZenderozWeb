@@ -1,4 +1,4 @@
-package Zenderoz;
+package zenderoz;
 
 import estructuras.Path;
 import estructuras.Distance;
@@ -10,6 +10,8 @@ import geocodificador.Renderer;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import manejador.Paths;
@@ -20,19 +22,58 @@ import pathmanager.PathManager;
  *
  * @author Admin
  */
-public class Main {
+public class ZenderozApp {
     
-    KmlHandler manejadorKml = new KmlHandler();
-    PathManager pathmanager = new PathManager();
-    Graph mapa = manejadorKml.loadGraph();
-    Paths calles = manejadorKml.loadStreets();
-    Paths avenidas = manejadorKml.loadAvenues();
-    Geotagger geoetiquetador = new Geotagger(calles, avenidas);
-    Renderer graficador = new Renderer();
-    String[] comboboxcalle = geoetiquetador.listAll(calles);
-    JScrollPane scrollPane;
-    ImageIcon icon;
-    Image image;
+    private final KmlHandler manejadorKml;
+    private final PathManager pathmanager;
+    private final Graph mapa;
+    private final Paths calles;
+    private final Paths avenidas;
+    private final Geotagger geoetiquetador;
+    private final Renderer graficador;
+    private final String[] comboboxcalle;
+    private JScrollPane scrollPane;
+    private ImageIcon icon;
+    private Image image;
+    private static ZenderozApp instance = null;
+    
+    protected ZenderozApp() {
+        manejadorKml = new KmlHandler();
+        pathmanager = new PathManager();
+        mapa = manejadorKml.loadGraph();
+        calles = manejadorKml.loadStreets();
+        avenidas = manejadorKml.loadAvenues();
+        geoetiquetador = new Geotagger(calles, avenidas);
+        graficador = new Renderer();
+        comboboxcalle = geoetiquetador.listAll(calles);
+    }
+    
+    public static ZenderozApp getInstance() {
+        
+        if(instance == null) {
+            instance = new ZenderozApp();
+        }
+        
+        return instance;
+    }
+    
+    public String[] getStreets() {
+        
+        ArrayList<Path> paths = calles.getPaths();
+        String[] streets = new String[paths.size()];
+        int i = 0;
+        
+        Iterator<Path> it = paths.iterator();
+        
+        while(it.hasNext()) {
+            
+            Path actual = (Path) it.next();
+            streets[i] = actual.getName();
+            i++;
+        }
+        
+        return streets;
+    }
     
     public void planificador(int nodoInicio, int nodoFin, int rango, int tipodebusqueda, String archivo) {
         pathmanager.weightGraph(mapa);
@@ -68,7 +109,7 @@ public class Main {
         }
     }
     
-    private String[] selectStreet(String streetName) {                                           
+    public String[] getAvenues(String streetName) {                                           
         // TODO add your handling code here:
         String calleseleccionada = streetName;
         System.out.println("CALLESELECT: " + calleseleccionada);
@@ -87,7 +128,7 @@ public class Main {
         return listadeAv;
     }
     
-    private void planRoute(Integer range,Integer type, String start_av, String start_street, String end_av, String end_street) {
+    public void planRoute(Integer range,Integer type, String start_av, String start_street, String end_av, String end_street) {
         //range : 300, 500, 700
         //type: 1, 2
         Thread th;
@@ -160,9 +201,5 @@ public class Main {
         //this.jEditorPane2.setText(narration);
         //this.setVisible(true);
         System.out.println("Printed GuiResult...");
-    }
-
-    public static void main(String[] args) throws IOException {
-        System.out.println("Ejecución");
     }
 }

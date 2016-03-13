@@ -31,14 +31,12 @@
                 <div class="col-md-6">
                     Seleccione la ruta:
                     <select id="routeList" class="form-control">
-                        <option value="none">Seleccione una ruta--</option>
                     </select>
                 </div>
                 
                 <div class="col-md-6">
                     Seleccione la parada a consultar:
                     <select id="stopList" class="form-control" disabled>
-                        <option value="none">Seleccione una ruta primero---</option>
                     </select>
                 </div>
 
@@ -50,7 +48,7 @@
         
         <script src="js/jquery-2.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/index.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?callback=drawMap" async defer></script>
     </body>
 </html>
