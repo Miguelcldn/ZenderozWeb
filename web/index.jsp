@@ -48,6 +48,7 @@
         
         <script src="js/jquery-2.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/common.js"></script>
         <script src="js/index.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?callback=drawMap" async defer></script>
     </body>

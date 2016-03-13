@@ -51,6 +51,9 @@ public class planRoute extends HttpServlet {
             throws ServletException, IOException {
         
         response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         try (PrintWriter out = response.getWriter()) {
             
             switch(request.getServletPath()) {
@@ -76,7 +79,7 @@ public class planRoute extends HttpServlet {
         ZenderozApp app = ZenderozApp.getInstance();
         String[] avenues = app.getAvenues(request.getParameter("street"));
         
-        out.write("{" + Utils.arrayToJSON(avenues) + "}");
+        out.write(Utils.arrayToJSON(avenues));
     }
     
     protected void getStreets(HttpServletRequest request, PrintWriter out) {
@@ -84,7 +87,7 @@ public class planRoute extends HttpServlet {
         ZenderozApp app = ZenderozApp.getInstance();
         String[] streets = app.getStreets();
         
-        out.write("{" + Utils.arrayToJSON(streets) + "}");
+        out.write(Utils.arrayToJSON(streets));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

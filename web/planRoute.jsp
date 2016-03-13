@@ -25,7 +25,7 @@
                 <button type="button" class="btn btn-lg btn-warning">Regresar</button>
             </div>
             <div class="row routeForm">
-                <form role="form">
+                <form id="routeForm" role="form">
                     <div class="form-group">
                         <label for="maxDistance">Máxima distancia a caminar</label>
                         <div class="radio">
@@ -40,20 +40,16 @@
                     </div>
                     <div class="form-group">
                         <label for="originStreet">Punto de origen</label>
-                        <select class="form-control" name="originStreet">
-                            <option value="none">Calle--</option>
+                        <select id="oStreet" class="form-control" name="originStreet">
                         </select>
-                        <select class="form-control" disabled>
-                            <option value="none">Avenida--</option>
+                        <select id="oAv" class="form-control" disabled>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="destStreet">Punto de destino</label>
-                        <select class="form-control" name="destStreet">
-                            <option value="none">Calle--</option>
+                        <select id="dStreet" class="form-control" name="destStreet">
                         </select>
-                        <select class="form-control" disabled>
-                            <option value="none">Avenida--</option>
+                        <select id="dAv" class="form-control" disabled>
                         </select>
                     </div>
                     <div class="form-group">
@@ -72,6 +68,7 @@
         
         <script src="js/jquery-2.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/planRoute.js"></script>
     </body>
 </html>

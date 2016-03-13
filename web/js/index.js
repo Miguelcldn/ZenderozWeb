@@ -15,8 +15,8 @@ function main() {
     
     $("#routeList").change(onRouteListChanged);
     
-    clearSelect($("#routeList"));
-    clearSelect($("#stopList"));
+    window.clearSelect($("#routeList"));
+    window.clearSelect($("#stopList"));
     
     loadBusRoutes();
 }
@@ -51,7 +51,7 @@ function loadStops(routeID) {
     'use strict';
     
     var stopsList = $("#stopList");
-    clearSelect(stopsList);
+    window.clearSelect(stopsList);
     
     var stops = window.busRoutes[routeID].stops;
     
@@ -77,18 +77,10 @@ function onRouteListChanged(e) {
     
     if(route === 'none') {
         stopList.prop('disabled', 'disabled');
-        clearSelect(stopList);
+        window.clearSelect(stopList);
     }
     else {
         stopList.prop('disabled', false);
         loadStops(route);
     }
-}
-
-function clearSelect(select) {
-    
-    select.empty();
-    
-    select.append('<option value="none">------------</option>');
-    select.val("none");
 }
