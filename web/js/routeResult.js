@@ -21,5 +21,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+/* jshint browser : true, jquery : true */
 
+$(document).ready(main);
+$("#backButton").click(window.goToRoot);
 
+function main() {
+    
+    queryRoute();
+}
+
+function queryRoute() {
+    
+    $("#instructionsTextArea").val("Calculando ruta, por favor espera...");
+    
+    var params = getParams();
+    
+    $.ajax({
+        url : "doRoutePlan" + params,
+        method: "GET",
+        success: drawResult,
+        error: function(request, error) {
+            $("#instructionsTextArea").val("Error obteniendo datos del servidor: \n" + error);
+            $("#map").fadeOut(1000);
+        }
+    });
+}
+
+function getParams() {
+    var p = window.location.href;
+    return p.slice(p.indexOf('?'));
+}
+
+function drawResult(result) {
+    
+    var map = $("#map");
+    
+    if(result.url && result.narration) {
+        
+        map.css("opacity", "0");
+        
+        setTimeout(function() {
+            map.removeClass().addClass("resultMap center-block");
+            map.attr("src", result.url);
+            map.css("opacity", "1");
+        }, 1000);
+
+        $("#instructionsTextArea").val(result.narration);
+        
+    } else if(result.error) {
+        map.fadeOut(1000);
+        $("#instructionsTextArea").val("Error: " + result.error);
+    } else {
+        $("#instructionsTextArea").val("No se puede encontrar la ruta especificada o la información recibida del servidor contiene errores.");
+    }
+}

@@ -29,6 +29,7 @@ var oStreet = $("#oStreet"),
     dAv = $("#dAv");
 
 $(document).ready(main);
+$("#backButton").click(window.goToRoot);
 
 function main() {
     'use strict';

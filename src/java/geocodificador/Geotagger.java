@@ -254,7 +254,7 @@ public class Geotagger {
 
                 if (result.getRoutes().indexOf(nodo) == 0) { //Si estoy en el comienzo
                     idnodo = String.valueOf(nodo.getId()).substring(4);
-                    descripcion = descripcion.concat("Comienza en: " + this.realNodeLocation(Integer.parseInt(idnodo)) + "\n");
+                    descripcion = descripcion.concat("Comienza en: " + this.realNodeLocation(Integer.parseInt(idnodo)) + "\\n");
 
 
                 } else {
@@ -284,13 +284,13 @@ public class Geotagger {
 
                                         descripcion = descripcion.concat("" + this.realNodeLocation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4))));
                                         descripcion = descripcion.concat(" hasta la " + this.realNodeLocation(Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))));
-                                        descripcion = descripcion.concat("\n");
+                                        descripcion = descripcion.concat("\\n");
                                         ultimarutatomada = idady;
                                         
                                         paso = paso + 1;
                                     } else {
                                         if (search == 2) {
-                                            descripcion = descripcion.concat(paso + ")" + "Camine " + pesoanterior.intValue() + " metros desde la " + this.realNodeLocation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4))) + " hasta la " + this.realNodeLocation(Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))) + "\n");
+                                            descripcion = descripcion.concat(paso + ")" + " Camine " + pesoanterior.intValue() + " metros desde la " + this.realNodeLocation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4))) + " hasta la " + this.realNodeLocation(Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))) + "\\n");
                                             ultimarutatomada = idady;
                                             paso = paso + 1;
 
@@ -299,7 +299,7 @@ public class Geotagger {
                                 } else {
                                     //si tomé un bus
                                     if (Integer.parseInt(ultimarutatomada) < 4000) {
-                                        descripcion = descripcion.concat(paso + ")" + " Tome la ruta de " + this.transport.findRoute(Integer.parseInt(ultimarutatomada)).getName() + " en sentido " + this.orientation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4)), Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))) + " desde la " + this.realNodeLocation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4))) + " hasta la " + this.realNodeLocation(Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))) + "\n");
+                                        descripcion = descripcion.concat(paso + ")" + " Tome la ruta de " + this.transport.findRoute(Integer.parseInt(ultimarutatomada)).getName() + " en sentido " + this.orientation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4)), Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))) + " desde la " + this.realNodeLocation(Integer.parseInt(String.valueOf(ultimoconocido.getId()).substring(4))) + " hasta la " + this.realNodeLocation(Integer.parseInt(String.valueOf(adyacente.getId()).substring(4))) + "\\n");
                                         ultimarutatomada = idady;
                                         paso = paso + 1;
                                     }

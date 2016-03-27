@@ -22,18 +22,8 @@ public class Renderer {
     public void setMap(Graph map) {
         this.map = map;
     }
-    private final ArrayList path;
-    private final String url;
 
-    public Renderer(ArrayList path) {
-        this.url = "http://maps.google.com/staticmap?&path=rgb:0x0000ff,weight:5|";
-        this.path = path;
-    }
-
-    public Renderer() {
-        this.url = "http://maps.google.com/staticmap?&path=rgb:0x0000ff,weight:5|";
-        this.path = new ArrayList();
-    }
+    public Renderer() {}
 
     public String constructor(Route result, int start, int end) {
 
@@ -154,7 +144,7 @@ public class Renderer {
 
         String id;
         String idnodo = new String();
-        String urlcompleto = "<img src=\"http://maps.google.com/staticmap?";
+        String urlcompleto = "https://maps.googleapis.com/maps/api/staticmap?scale=2&";
         if (result.getRoutes().isEmpty() == false) {
             Iterator resultadoIterator = result.getRoutes().iterator();
             while (resultadoIterator.hasNext()) {
@@ -170,12 +160,12 @@ public class Renderer {
                     latit = Double.toString(latitud);
                     longi = Double.toString(longitud);
                     urlcompleto = urlcompleto.concat("markers=");
+                    urlcompleto = urlcompleto.concat("color:green%7Clabel:I%7C");
                     urlcompleto = urlcompleto.concat(latit);
                     urlcompleto = urlcompleto.concat(",");
                     urlcompleto = urlcompleto.concat(longi);
-                    urlcompleto = urlcompleto.concat(",");
-                    urlcompleto = urlcompleto.concat("greeni");
-                    urlcompleto = urlcompleto.concat("|");
+                    //urlcompleto = urlcompleto.concat(",");
+                    //urlcompleto = urlcompleto.concat("%7C");
 
 
                 }
@@ -183,11 +173,11 @@ public class Renderer {
                     Edge transferencia = (Edge) nodo.getEdges().get(0);
                     String transfer = String.valueOf(transferencia.getId()).substring(0, 4);
                     if (Integer.parseInt(transfer) >= 4000 && Integer.parseInt(id) != start && Integer.parseInt(id) != end && Integer.parseInt(transfer) != end) {
-                        urlcompleto = urlcompleto.concat("&path=rgba:0xff6600ff,weight:6|");
+                        urlcompleto = urlcompleto.concat("&path=color:0xff66007f%7Cweight:6");
 
                     }
                     if (Integer.parseInt(transfer) < 4000) {
-                        urlcompleto = urlcompleto.concat("&path=rgba:0x3366CCff,weight:6|");
+                        urlcompleto = urlcompleto.concat("&path=color:0x3366CC7f%7Cweight:6");
                     }
                 } else {
 
@@ -199,10 +189,11 @@ public class Renderer {
                         longitud = this.map.findNode(Integer.parseInt(idnodo)).getLongitude();
                         latit = Double.toString(latitud);
                         longi = Double.toString(longitud);
+                        urlcompleto = urlcompleto.concat("%7C");
                         urlcompleto = urlcompleto.concat(latit);
                         urlcompleto = urlcompleto.concat(",");
                         urlcompleto = urlcompleto.concat(longi);
-                        urlcompleto = urlcompleto.concat("|");
+                        //urlcompleto = urlcompleto.concat("%7C");
 
                     }
                 }
@@ -212,14 +203,14 @@ public class Renderer {
                     latit = Double.toString(latitud);
                     longi = Double.toString(longitud);
                     urlcompleto = urlcompleto.concat("&markers=");
+                    urlcompleto = urlcompleto.concat("color:red%7Clabel:F%7C");
                     urlcompleto = urlcompleto.concat(latit);
                     urlcompleto = urlcompleto.concat(",");
                     urlcompleto = urlcompleto.concat(longi);
-                    urlcompleto = urlcompleto.concat(",");
-                    urlcompleto = urlcompleto.concat("redf");
+                    //urlcompleto = urlcompleto.concat(",");
                 }
             }
-            urlcompleto = urlcompleto.concat("&size=550x550&key=ABQIAAAAFPvplsJRVLg84E-dBUXf-xTgj3-QiSCkxBpNIuyJ69pKv5QlrxQcjkUOgrmJQdBx_3Y5ilBvgJx03w\"></img>");
+            urlcompleto = urlcompleto.concat("&size=800x600&key=ABQIAAAAFPvplsJRVLg84E-dBUXf-xTgj3-QiSCkxBpNIuyJ69pKv5QlrxQcjkUOgrmJQdBx_3Y5ilBvgJx03w");
         }
         System.out.println("" + urlcompleto);
         return urlcompleto;

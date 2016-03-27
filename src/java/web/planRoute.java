@@ -23,6 +23,7 @@
  */
 package web;
 
+import estructuras.PlanResult;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -71,7 +72,26 @@ public class planRoute extends HttpServlet {
     }
     
     protected void doPlanRoute(HttpServletRequest request, PrintWriter out) {
-        out.write("{ \"message\": \"No routes yet.\" }");
+        
+        Integer distance = Integer.parseInt(request.getParameter("maxDistance")),
+                routeType = 0;
+        String oStreet = request.getParameter("originStreet"),
+                oAv = request.getParameter("originAv"),
+                dStreet = request.getParameter("destStreet"),
+                dAv = request.getParameter("destAv"),
+                type = request.getParameter("type");
+        
+        if(type.equals("change"))
+            routeType = 1;
+        else if(type.equals("distance"))
+            routeType = 2;
+        
+        ZenderozApp app = ZenderozApp.getInstance();
+        PlanResult result = app.planRoute(distance, routeType, oAv, oStreet, dAv, dStreet);
+        
+        out.write("{\"url\":\"" + result.getURL() + "\",");
+        out.write("\"narration\":\"" + result.getNarration() + "\"}");
+        
     }
     
     protected void getAvenues(HttpServletRequest request, PrintWriter out) {

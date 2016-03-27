@@ -22,10 +22,12 @@
     <body>
         <div class="container">
             <div class="row">
-                <button type="button" class="btn btn-lg btn-warning">Regresar</button>
+                <button id="backButton" type="button" class="btn btn-lg btn-warning">Regresar</button>
             </div>
             <div class="row">
-                <div id="map" style="height:50em"></div>
+                <div style="height:50em">
+                    <img id="map" class="loading-gif center-block" src="resources/loading.gif">
+                </div>
             </div>
             <div class="row">
                 <textarea id="instructionsTextArea" class="form-control" rows="5"></textarea>
@@ -34,7 +36,6 @@
         
         <script src="js/jquery-2.2.1.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/main.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?callback=drawMap" async defer></script>
+        <script src="js/routeResult.js"></script>
     </body>
 </html>

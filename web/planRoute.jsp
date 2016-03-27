@@ -22,10 +22,10 @@
     <body>
         <div class="container">
             <div class="row">
-                <button type="button" class="btn btn-lg btn-warning">Regresar</button>
+                <button id="backButton" type="button" class="btn btn-lg btn-warning">Regresar</button>
             </div>
             <div class="row routeForm">
-                <form id="routeForm" role="form">
+                <form id="routeForm" role="form" action="routeResult.jsp" method="GET">
                     <div class="form-group">
                         <label for="maxDistance">Máxima distancia a caminar</label>
                         <div class="radio">
@@ -42,14 +42,14 @@
                         <label for="originStreet">Punto de origen</label>
                         <select id="oStreet" class="form-control" name="originStreet">
                         </select>
-                        <select id="oAv" class="form-control" disabled>
+                        <select id="oAv" class="form-control" name="originAv" disabled>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="destStreet">Punto de destino</label>
                         <select id="dStreet" class="form-control" name="destStreet">
                         </select>
-                        <select id="dAv" class="form-control" disabled>
+                        <select id="dAv" class="form-control" name="destAv" disabled>
                         </select>
                     </div>
                     <div class="form-group">

@@ -21,28 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package zenderoz;
+package estructuras;
 
 /**
  *
  * @author Miguel Celedon
  */
-public class Utils {
+public class PlanResult {
     
-    public static String arrayToJSON(Object[] source) {
+    private final String narration;
+    private final String URL;
+    
+    public PlanResult(String narration, String url) {
         
-        String out = "[";
-        
-        for(int i = 0; i < source.length; i++) {
-            out += "\"" + source[i].toString() + "\"";
-            
-            if(i + 1 < source.length)
-                out += ",";
-        }
-        
-        out += "]";
-        
-        return out;
-        
-    }    
+        this.narration = narration;
+        this.URL = url;
+    }
+
+    /**
+     * @return the narration
+     */
+    public String getNarration() {
+        return narration;
+    }
+
+    /**
+     * @return the URL
+     */
+    public String getURL() {
+        return URL;
+    }
 }

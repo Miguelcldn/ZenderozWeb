@@ -3,6 +3,7 @@ package zenderoz;
 import estructuras.Path;
 import estructuras.Distance;
 import estructuras.Graph;
+import estructuras.PlanResult;
 import estructuras.Route;
 import estructuras.Routes;
 import geocodificador.Geotagger;
@@ -75,7 +76,7 @@ public class ZenderozApp {
         return streets;
     }
     
-    public void planificador(int nodoInicio, int nodoFin, int rango, int tipodebusqueda, String archivo) {
+    public PlanResult planificador(int nodoInicio, int nodoFin, int rango, int tipodebusqueda, String archivo) {
         pathmanager.weightGraph(mapa);
         pathmanager.setMap(mapa);
         Routes caminos = new Routes();
@@ -90,6 +91,8 @@ public class ZenderozApp {
         Graph grafofinal = pathmanager.convertRoutesToGraph(tramosencont);
         graficador.setMap(mapa);
         Distance finale = null;
+        PlanResult result = null;
+        
         if (tipodebusqueda == 2) {
             finale = grafofinal.Dijkstra(Integer.parseInt((String.valueOf(7500).concat(Integer.toString(nodoInicio)))), Integer.parseInt((String.valueOf(8500).concat(Integer.toString(nodoFin)))));
         } else if (tipodebusqueda == 1) {
@@ -100,13 +103,15 @@ public class ZenderozApp {
             busquedaresult.setId(999);
             busquedaresult = pathmanager.sortRoute(busquedaresult);
             geoetiquetador.setMap(mapa);
-            GuiResult(busquedaresult, mapa, calles, avenidas, caminos, tipodebusqueda, true);
+            result = GuiResult(busquedaresult, mapa, calles, avenidas, caminos, tipodebusqueda, true);
             //TODO: Fix this
             //this.jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/mapazona.jpg")));
         } catch (ArrayIndexOutOfBoundsException e) {
             //TODO: Error msg here
             //JOptionPane.showMessageDialog(this, "El punto de origen y destino son iguales", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
+        return result;
     }
     
     public String[] getAvenues(String streetName) {                                           
@@ -128,34 +133,29 @@ public class ZenderozApp {
         return listadeAv;
     }
     
-    public void planRoute(Integer range,Integer type, String start_av, String start_street, String end_av, String end_street) {
+    public PlanResult planRoute(Integer range,Integer type, String start_av, String start_street, String end_av, String end_street) {
         //range : 300, 500, 700
         //type: 1, 2
-        Thread th;
-        th = new Thread(){
-            @Override
-            public void run(){
-                
-                geoetiquetador.setMap(mapa);
-                String archivo = range.toString() + ".txt";
-                int inicio = geoetiquetador.findStreetAvenueNodeID(start_av, start_street);
-                int fin = geoetiquetador.findStreetAvenueNodeID(end_av, end_street);
-                System.out.println("INICIO: " + inicio + " FIN: " + fin);
-                
-                
-                if (range != 0 && type != 0) {
-                    if (inicio != fin) {
-                        System.out.println("Busqueda = " + range + " Inicio: " + inicio + " fin: " + fin);
-                        planificador(inicio, fin, range, type, archivo);
-                        System.out.println("Archivo = " + archivo);
-                    } else {
-                        //Error "El punto de origen y destino son iguales"
-                    }
-                } else {
-                    //Error: "Por favor complete el formulario"
-                }
-            }};
-        th.start();
+        geoetiquetador.setMap(mapa);
+        String archivo = range.toString() + ".txt";
+        int inicio = geoetiquetador.findStreetAvenueNodeID(start_av, start_street);
+        int fin = geoetiquetador.findStreetAvenueNodeID(end_av, end_street);
+        System.out.println("INICIO: " + inicio + " FIN: " + fin);
+        PlanResult result = null;
+
+        if (range != 0 && type != 0) {
+            if (inicio != fin) {
+                System.out.println("Busqueda = " + range + " Inicio: " + inicio + " fin: " + fin);
+                result = planificador(inicio, fin, range, type, archivo);
+                System.out.println("Archivo = " + archivo);
+            } else {
+                //Error "El punto de origen y destino son iguales"
+            }
+        } else {
+            //Error: "Por favor complete el formulario"
+        }
+        
+        return result;
     }     
 
     //<editor-fold defaultstate="collapsed" desc="Unknown function">
@@ -184,7 +184,7 @@ public class ZenderozApp {
     }*/
     //</editor-fold>
     
-    public void GuiResult(Route resultante, Graph mapa, Paths calles, Paths avenidas, Routes transporte, int tipodebusqueda, boolean modal) {
+    public PlanResult GuiResult(Route resultante, Graph mapa, Paths calles, Paths avenidas, Routes transporte, int tipodebusqueda, boolean modal) {
         Geotagger resultados= new Geotagger(calles,avenidas);
         Renderer resultando = new Renderer();
         resultando.setMap(mapa);
@@ -194,12 +194,14 @@ public class ZenderozApp {
         String narration = resultados.constructor(resultante, 7500, 8500, tipodebusqueda);
         String result = resultando.URLConstructor(resultante, 7500, 8500);
         //this.jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/fondo1024.jpg")));
-//        this.jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/regresar.gif")));
+        //this.jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/regresar.gif")));
         //this.jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/regresar.gif")));
         //this.jEditorPane1.setContentType("text/html");
         //this.jEditorPane1.setText(result);
         //this.jEditorPane2.setText(narration);
         //this.setVisible(true);
         System.out.println("Printed GuiResult...");
+        
+        return new PlanResult(narration, result);
     }
 }
