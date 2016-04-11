@@ -128,7 +128,7 @@ public class PathManager {
 
     public Graph weightGraph(Graph map) {
         if (map.getNodes().isEmpty()) {
-            System.out.println("ERROR: EMPTY");
+            //System.out.println("ERROR: EMPTY");
         } else {
 
             Iterator nodosIterator = map.getNodes().iterator();
@@ -152,7 +152,7 @@ public class PathManager {
 
     public void weightTransportRoutes(Routes transport, Graph map) {
         if (transport.getRoutes().isEmpty()) {
-            System.out.println(" ERROR: EMPTY");
+            //System.out.println(" ERROR: EMPTY");
         } else {
 
             Iterator rutasIterator = transport.getRoutes().iterator();
@@ -253,11 +253,11 @@ public class PathManager {
         Route resultado = new Route();
 
         if (this.transport.getRoutes().isEmpty()) {
-            System.out.println("ERROR: EMPTY");
+            //System.out.println("ERROR: EMPTY");
         } else {
-//            System.out.println(" Cantidad de routes: SIZE  " + this.transport.getRoutes().size());
+//            //System.out.println(" Cantidad de routes: SIZE  " + this.transport.getRoutes().size());
             CopyOnWriteArrayList iteratorsPrincipales = new CopyOnWriteArrayList(routes.getRoutes());
-//            System.out.println("ITERATORSSIZERRR: " + iteratorsPrincipales.size());
+//            //System.out.println("ITERATORSSIZERRR: " + iteratorsPrincipales.size());
             for (int x = 0; x < this.transport.getRoutes().size(); x++) {
                 Iterator rutasPrincipalIterator = iteratorsPrincipales.listIterator(x);// Se crea el ITERADOR PRINCIPAL DE RUTAS
                 Iterator rutasSecundarioIterator;
@@ -278,27 +278,27 @@ public class PathManager {
                             float pesoactual;
                             flag = 0;
                             RouteNode nodo = (RouteNode) rutaIterator.next();
-                            System.out.println("Nodo: " + nodo.getId());
-                            System.out.println("ITERANDO DENTRO DE LA RUTA: " + rutaActual.getId() + " CONTRA LA RUTA: " + rutaSiguiente.getId());
+                            //System.out.println("Nodo: " + nodo.getId());
+                            //System.out.println("ITERANDO DENTRO DE LA RUTA: " + rutaActual.getId() + " CONTRA LA RUTA: " + rutaSiguiente.getId());
                             int id = nodo.getId();
                             Distance conexion = this.findRouteInRange(map, id, maxDistance);
                             ListIterator conexionIterator = conexion.getNodes().listIterator();
 
                             while (conexionIterator.hasNext()) {
-//                            System.out.println("EXPLORANDO EL RESULTADO DE DIJKSTRA");
+//                            //System.out.println("EXPLORANDO EL RESULTADO DE DIJKSTRA");
                                 int conex = (Integer) conexionIterator.next();
                                 CopyOnWriteArrayList prueba = new CopyOnWriteArrayList(rutaSiguiente.getRoutes());
                                 Iterator rutaSiguienteIterator = prueba.iterator();
 
                                 while (rutaSiguienteIterator.hasNext() && flag != -1) {    //comparo todos los elementos de la ruta siguiente, con cada adyacende del resultado de Dijkstra.
-//                                    System.out.println("COMPARANDO CADA NODO DE LA RUTA: " + rutaSiguiente.getId());
+//                                    //System.out.println("COMPARANDO CADA NODO DE LA RUTA: " + rutaSiguiente.getId());
 
 
                                     RouteNode nodoSiguiente = (RouteNode) rutaSiguienteIterator.next();
 
                                     if (conex == nodoSiguiente.getId() && rutaSiguienteIterator.hasNext()) {
-                                        System.out.println("Eureka!!!");
-                                        System.out.println("Desde el nodo " + nodo.getId() + " de la ruta " + rutaActual.getId() + " se alcanza a la ruta " + rutaSiguiente.getId() + " por el nodo " + nodoSiguiente.getId());
+                                        //System.out.println("Eureka!!!");
+                                        //System.out.println("Desde el nodo " + nodo.getId() + " de la ruta " + rutaActual.getId() + " se alcanza a la ruta " + rutaSiguiente.getId() + " por el nodo " + nodoSiguiente.getId());
 
                                         flag = 2;
                                         caminofinal.setRoutes((ArrayList) conexion.getNodes());
@@ -307,21 +307,21 @@ public class PathManager {
                                         pesoactual = dist[index];
                                         if (nodo.getId() == nodoSiguiente.getId()) {
                                             flag = -1;
-                                            System.out.println("Aca");
+                                            //System.out.println("Aca");
                                             resultado = this.rebuildCompleteDijkstraPath(conexion, nodo.getId(), nodoSiguiente.getId());
                                             tramosEncontrados = this.tagPaths(tramosEncontrados, resultado, nodo.getId(), nodoSiguiente.getId(), rutaActual.getId(), rutaSiguiente.getId());
 
                                         } else {
                                             //if(!flag){
                                             if (ultimopesoencontrado == Float.MAX_VALUE) {
-                                                System.out.println("here..." + pesoactual);
+                                                //System.out.println("here..." + pesoactual);
                                                 ultimopesoencontrado = pesoactual;
                                                 resultado = this.rebuildCompleteDijkstraPath(conexion, nodo.getId(), nodoSiguiente.getId());
                                                 nodosig = nodoSiguiente.getId();
                                                 flag = 2;
                                             } else {
                                                 if (ultimopesoencontrado > pesoactual) {
-                                                    System.out.println("Es menor!!! .." + ultimopesoencontrado + " >" + pesoactual);
+                                                    //System.out.println("Es menor!!! .." + ultimopesoencontrado + " >" + pesoactual);
                                                     resultado = this.rebuildCompleteDijkstraPath(conexion, nodo.getId(), nodoSiguiente.getId());
                                                     ultimopesoencontrado = pesoactual;
                                                     nodosig = nodoSiguiente.getId();
@@ -342,7 +342,7 @@ public class PathManager {
                             }
 
                             if (flag > 0) {
-                                System.out.println("ETIQUETO");
+                                //System.out.println("ETIQUETO");
                                 tramosEncontrados = this.tagPaths(tramosEncontrados, resultado, nodo.getId(), nodosig, rutaActual.getId(), rutaSiguiente.getId());
                             }
 
@@ -352,10 +352,10 @@ public class PathManager {
 
 
                         }
-                        System.out.println("verifico toda 1 ruta");
+                        //System.out.println("verifico toda 1 ruta");
 
                     }
-                    System.out.println("RUTA ACTUAL: " + rutaActual.getId());
+                    //System.out.println("RUTA ACTUAL: " + rutaActual.getId());
 
                 }
             }
@@ -363,9 +363,9 @@ public class PathManager {
 
         }
 
-        System.out.println("TERMINO DE CONECTAR RUTAS");
+        //System.out.println("TERMINO DE CONECTAR RUTAS");
 
-        System.out.println("TRAMOS ENCONTRADOS = " + tramosEncontrados.getRoutes().size());
+        //System.out.println("TRAMOS ENCONTRADOS = " + tramosEncontrados.getRoutes().size());
         return tramosEncontrados;
     }
 
@@ -377,7 +377,7 @@ public class PathManager {
         int contador = 0;
 
         if (this.transport.getRoutes().isEmpty()) {
-            System.out.println("ERROR: EMPTY");
+            //System.out.println("ERROR: EMPTY");
         } else {
             CopyOnWriteArrayList iteratorsPrincipales = new CopyOnWriteArrayList(routes.getRoutes());
             for (int y = 0; y < 2; y++) {
@@ -398,13 +398,13 @@ public class PathManager {
                             ListIterator conexionIterator = conexion.getNodes().listIterator();
 
                             while (conexionIterator.hasNext()) {
-//                            System.out.println("EXPLORANDO EL RESULTADO DE DIJKSTRA");
+//                            //System.out.println("EXPLORANDO EL RESULTADO DE DIJKSTRA");
                                 int conex = (Integer) conexionIterator.next();
                                 CopyOnWriteArrayList prueba = new CopyOnWriteArrayList(rutaSiguiente.getRoutes());
                                 Iterator rutaSiguienteIterator = prueba.iterator();
                                 while (rutaSiguienteIterator.hasNext()) {    //comparo todos los elementos de la ruta siguiente, con cada adyacende del resultado de Dijkstra.
 
-//                                    System.out.println("COMPARANDO CADA NODO DE LA RUTA: " + rutaSiguiente.getId());
+//                                    //System.out.println("COMPARANDO CADA NODO DE LA RUTA: " + rutaSiguiente.getId());
 
                                     RouteNode nodoSiguiente = (RouteNode) rutaSiguienteIterator.next();
 
@@ -414,7 +414,7 @@ public class PathManager {
                                         float[] dist = conexion.getDistances();
                                         if (ultimopesoencontrado == Float.MAX_VALUE) {
                                             ultimopesoencontrado = dist[index];
-//                                            System.out.println("Ultimopesoencontrado= " + ultimopesoencontrado + " Node SiguienteID: " + nodoSiguiente.getId());
+//                                            //System.out.println("Ultimopesoencontrado= " + ultimopesoencontrado + " Node SiguienteID: " + nodoSiguiente.getId());
                                             Route resultado = this.rebuildCompleteDijkstraPath(conexion, nodounico.getId(), nodoSiguiente.getId());
                                             preprocessed = this.tagPaths(preprocessed, resultado, nodounico.getId(), nodoSiguiente.getId(), rutaActual.getId(), rutaSiguiente.getId());
                                         } else {
@@ -450,18 +450,18 @@ public class PathManager {
 
 
                             }
-                            System.out.println("verifico toda 1 ruta");
+                            //System.out.println("verifico toda 1 ruta");
                         }
                     }
-                    System.out.println("RUTA ACTUAL: " + rutaActual.getId());
+                    //System.out.println("RUTA ACTUAL: " + rutaActual.getId());
 
                 }
             }
         }
 
-        System.out.println("TERMINO DE CONECTAR RUTAS");
+        //System.out.println("TERMINO DE CONECTAR RUTAS");
 
-        System.out.println("TRAMOS ENCONTRADOS = " + preprocessed.getRoutes().size());
+        //System.out.println("TRAMOS ENCONTRADOS = " + preprocessed.getRoutes().size());
         return preprocessed;
     }
 
@@ -676,7 +676,7 @@ public class PathManager {
                     definitivo.setSingleNode(nodonuevo);
                 }
             }
-            System.out.println("----------FIN------------");
+            //System.out.println("----------FIN------------");
         }
         return definitivo;
     }

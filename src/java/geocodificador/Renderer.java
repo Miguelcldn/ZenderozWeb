@@ -8,7 +8,6 @@ import estructuras.Edge;
 import estructuras.Graph;
 import estructuras.RouteNode;
 import estructuras.Route;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
@@ -131,7 +130,7 @@ public class Renderer {
             urlcompleto = urlcompleto.concat("&size=550x550&key=ABQIAAAAFPvplsJRVLg84E-dBUXf-xTgj3-QiSCkxBpNIuyJ69pKv5QlrxQcjkUOgrmJQdBx_3Y5ilBvgJx03w\"></img>");
 
         }
-        System.out.println("URL: " + urlcompleto);
+        //System.out.println("URL: " + urlcompleto);
         return urlcompleto;
     }
 
@@ -212,7 +211,7 @@ public class Renderer {
             }
             urlcompleto = urlcompleto.concat("&size=800x600&key=ABQIAAAAFPvplsJRVLg84E-dBUXf-xTgj3-QiSCkxBpNIuyJ69pKv5QlrxQcjkUOgrmJQdBx_3Y5ilBvgJx03w");
         }
-        System.out.println("" + urlcompleto);
+        //System.out.println("" + urlcompleto);
         return urlcompleto;
     }
 }

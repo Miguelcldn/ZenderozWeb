@@ -31,9 +31,9 @@ public class Graph {
     public void setSingleNode(Node node) {
         if (!this.nodeExist(node.getId())) {
             this.nodes.add(node);
-//            System.out.println("Node con id: " + nodo.getId() + " insertado en el grafo");
+//            //System.out.println("Node con id: " + nodo.getId() + " insertado en el grafo");
         } else {
-            System.out.println("Este id de nodo ya existe");
+            //System.out.println("Este id de nodo ya existe");
         }
     }
 
@@ -47,7 +47,7 @@ public class Graph {
                 }
             }
         }
-//        System.out.println("Node no encontrado");
+//        //System.out.println("Node no encontrado");
         return null;
     }
 
@@ -72,18 +72,18 @@ public class Graph {
 
     public int findNodeByIndex(int index) {
         int id = 0;
-//        System.out.println("Buscando nodo de Index: " + index);
+//        //System.out.println("Buscando nodo de Index: " + index);
         if (!nodes.isEmpty()) {
             Iterator nodosIterator = nodes.iterator();
             while (nodosIterator.hasNext()) {
                 Node nodoAlmacenado = (Node) nodosIterator.next();
                 if (index == nodes.indexOf(nodoAlmacenado)) {
-//                    System.out.println("Node encontrado");
+//                    //System.out.println("Node encontrado");
                     id = nodoAlmacenado.getId();
                 }
             }
         } else {
-//            System.out.println("Node no encontrado");
+//            //System.out.println("Node no encontrado");
         }
         return id;
     }
@@ -109,7 +109,7 @@ public class Graph {
 
     public void printGraph() {
         if (this.nodes.isEmpty()) {
-            System.out.println("ERROR: GRAFO VACIO");
+            //System.out.println("ERROR: GRAFO VACIO");
         } else {
             Iterator nodosIterator = nodes.iterator();
             while (nodosIterator.hasNext()) {
@@ -175,7 +175,7 @@ public class Graph {
 
                     if(this.findNodeByIndex(u)== id_final){
                         cola.clear();
-                        System.out.println("Encontrado!");
+                        //System.out.println("Encontrado!");
                     }
                     else
                     {
@@ -206,7 +206,7 @@ public class Graph {
                     }
                 }
             }
-            System.out.println("Tamaño : " + tamaño);
+            //System.out.println("Tamaño : " + tamaño);
             float[] distanciasTotal = new float[(tamaño + 1)];
             int[] padresTotal = new int[(tamaño + 1)];
 
@@ -239,14 +239,14 @@ public class Graph {
 //        System.out.print("Nodos \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            System.out.print(i + " \t");
-//            System.out.println("(" + nodosTodos.get(i).toString() + ")");
+//            //System.out.println("(" + nodosTodos.get(i).toString() + ")");
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("dist: \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            System.out.print(distancia[i] + " \t");
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("ante: \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            if (antecesor[i] != Integer.MIN_VALUE) {
@@ -256,7 +256,7 @@ public class Graph {
 //            }
 //
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("visi: \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            System.out.print(visitado[i] + " \t");
@@ -279,7 +279,7 @@ public class Graph {
             }
             index = nodes.indexOf(findNode(id));
             if (index != -1) {
-               //System.out.println("=========================================");
+               ////System.out.println("=========================================");
                 distancia[index] = 0;
                 LinkedList cola = new LinkedList();
                 cola.add(index);
@@ -309,7 +309,7 @@ public class Graph {
 
                     if(this.findNodeByIndex(u)== id_final){
                         cola.clear();
-                        System.out.println("Cola size: " + cola.size() + " y nodo: " + this.findNodeByIndex(u));
+                        //System.out.println("Cola size: " + cola.size() + " y nodo: " + this.findNodeByIndex(u));
                     }
                     else{
                     ArrayList adyacentes = this.findNode(this.findNodeByIndex(u)).getEdges();
@@ -338,7 +338,7 @@ public class Graph {
                     }
                 }
             }
-            System.out.println("Tamaño : " + tamaño);
+            //System.out.println("Tamaño : " + tamaño);
             float[] distanciasTotal = new float[(tamaño + 1)];
             int[] padresTotal = new int[(tamaño + 1)];
             
@@ -371,21 +371,21 @@ public class Graph {
 //                System.out.print(this.findNodeByIndex(i) + " \t");
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("Nodos \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            if (distancia[i] != Float.POSITIVE_INFINITY) {
 //                System.out.print(i + " \t");
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("dist: \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            if (distancia[i] != Float.POSITIVE_INFINITY) {
 //                System.out.print(distancia[i] + " \t");
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("ante: \t");
 //        for (int i = 0; i < nodosTodos.size(); i++) {
 //            if (distancia[i] != Float.POSITIVE_INFINITY) {
@@ -396,7 +396,7 @@ public class Graph {
 //                }
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 
         return vectorDistancia;
     }
@@ -414,7 +414,7 @@ public class Graph {
             }
             index = nodes.indexOf(findNode(id));
             if (index != -1) {
-//                System.out.println("=========================================");
+//                //System.out.println("=========================================");
                 distancia[index] = 0;
                 LinkedList cola = new LinkedList();
                 cola.add(index);
@@ -442,14 +442,14 @@ public class Graph {
                     if (adyacentes != null) {
                         Iterator adyacentesIterator = adyacentes.iterator();
                         while (adyacentesIterator.hasNext()) {
-//                            System.out.println("ENTRO AL WHILE--------->");
+//                            //System.out.println("ENTRO AL WHILE--------->");
                             Edge a = (Edge) adyacentesIterator.next();
                             int v = nodes.indexOf(findNode(a.getId()));
                             if (distancia[v] > distancia[u] + a.getWeight() && maxDistance > distancia[u] + a.getWeight()) {
                                 distancia[v] = (float) (distancia[u] + a.getWeight());
                                 antecesor[v] = u;
                                 cola.addLast(v);
-//                                System.out.println("Ante: " + this.findNodeByIndex(antecesor[v]));
+//                                //System.out.println("Ante: " + this.findNodeByIndex(antecesor[v]));
                             }
                         }
                     }
@@ -465,7 +465,7 @@ public class Graph {
                 }
             }
         }
-        System.out.println("Tamaño : " + tamaño);
+        //System.out.println("Tamaño : " + tamaño);
         float[] distanciasTotal = new float[(tamaño+1)];
         int[] padresTotal = new int[(tamaño+1)];
         ArrayList nodosTodos = new ArrayList();
@@ -496,21 +496,21 @@ public class Graph {
 //                System.out.print(this.findNodeByIndex(i) + " \t");
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("Nodos \t");
 //        for (int i = 0; i < this.nodes.size(); i++) {
 //            if (distancia[i] != Float.POSITIVE_INFINITY) {
 //                System.out.print(i + " \t");
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("dist: \t");
 //        for (int i = 0; i < this.nodes.size(); i++) {
 //            if (distancia[i] != Float.POSITIVE_INFINITY) {
 //                System.out.print(distancia[i] + " \t");
 //            }
 //        }
-//        System.out.println("");
+//        //System.out.println("");
 //        System.out.print("ante: \t");
 //        for (int i = 0; i < this.nodes.size(); i++) {
 //            if (distancia[i] != Float.POSITIVE_INFINITY) {
@@ -522,7 +522,7 @@ public class Graph {
 //            }
 //        }
 //
-//        System.out.println("");
+//        //System.out.println("");
 
      return vectorDistancia;
 }
@@ -537,7 +537,7 @@ public class Graph {
                 Node adyacente = this.findNode(ady.getId());
                 
                    adyacente.findEdge(nodo.getId());
-                   System.out.println("El nodo " + nodo.getId() + " está incompleto");
+                   //System.out.println("El nodo " + nodo.getId() + " está incompleto");
       
 
             }

@@ -56,7 +56,7 @@ public class RouteNode {
                 }
             }
         }
-        System.out.println("Adyacente no encontrado!");
+        //System.out.println("Adyacente no encontrado!");
         return null;
     }
 
@@ -64,7 +64,7 @@ public class RouteNode {
         if (edgeExist(adyacente.getId()) == false) {
             this.edges.add(adyacente);
         } else {
-            System.out.println("id de adyacente ya existe");
+            //System.out.println("id de adyacente ya existe");
         }
 
     }

@@ -23,6 +23,7 @@
  */
 package web;
 
+import estructuras.GPSUnit;
 import estructuras.PlanResult;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -67,6 +68,9 @@ public class planRoute extends HttpServlet {
                 case "/streets":
                     getStreets(request, out);
                     break;
+                case "/units":
+                    getUnits(request, out);
+                    break;
             }
         }
     }
@@ -108,6 +112,29 @@ public class planRoute extends HttpServlet {
         String[] streets = app.getStreets();
         
         out.write(Utils.arrayToJSON(streets));
+    }
+    
+    protected void getUnits(HttpServletRequest request, PrintWriter out) {
+        
+        ZenderozApp app = ZenderozApp.getInstance();
+        GPSUnit[] units = app.getUnits();
+        boolean first = true;
+        
+        out.write("[");
+        
+        for(GPSUnit u : units) {
+            if(!first) out.write(",");
+                        
+            out.write("{");
+            out.write("\"id\":\"" + u.ID + "\"");
+            out.write(",\"lat\":" + u.Latitude);
+            out.write(",\"lng\":" + u.Longitude);
+            out.write("}");
+            
+            first = false;
+        }
+        
+        out.write("]");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

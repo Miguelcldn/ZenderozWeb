@@ -9,6 +9,7 @@
         <url-pattern>/doRoutePlan</url-pattern>
         <url-pattern>/avenues</url-pattern>
         <url-pattern>/streets</url-pattern>
+        <url-pattern>/units</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

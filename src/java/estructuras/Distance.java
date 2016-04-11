@@ -69,7 +69,7 @@ public class Distance {
 
     public void printDistances() {
         if (this.nodes.isEmpty()) {
-            System.out.println("Grafo vacío");
+            //System.out.println("Grafo vacío");
         } else {
             Iterator nodosIterator = nodes.iterator();
             while (nodosIterator.hasNext()) {

@@ -77,18 +77,18 @@ public class Route {
 
     public void printRoute() {
         if (this.routeNode.isEmpty()) {
-            System.out.println("Epa, no teneis un sevillo en el grafo");
+            //System.out.println("Epa, no teneis un sevillo en el grafo");
         } else {
             Iterator nodosIterator = routeNode.iterator();
-            System.out.println("Ruta: " + this.getId() + " Modo :" + this.getMode() + "Nombre: " + this.getName());
+            //System.out.println("Ruta: " + this.getId() + " Modo :" + this.getMode() + "Nombre: " + this.getName());
             while (nodosIterator.hasNext()) {
-                System.out.println("************************");
+                //System.out.println("************************");
                 RouteNode nodoActual = (RouteNode) nodosIterator.next();
-                System.out.println("Nodo ID: " + nodoActual.getId() + " Index: " + this.routeNode.indexOf(nodoActual));
+                //System.out.println("Nodo ID: " + nodoActual.getId() + " Index: " + this.routeNode.indexOf(nodoActual));
                 Iterator adys = nodoActual.getEdges().iterator();
                 while(adys.hasNext()){
                     Edge adyace = (Edge) adys.next();
-                    System.out.println("Adyacentes: " + adyace.getId() + " PESO: " + adyace.getWeight());
+                    //System.out.println("Adyacentes: " + adyace.getId() + " PESO: " + adyace.getWeight());
                   
                 }
 
@@ -97,7 +97,7 @@ public class Route {
     }
 
     public RouteNode findRouteNode(int id) {
-        if (routeNode.size() != 0) {
+        if (!routeNode.isEmpty()) {
             Iterator nodosIterator = routeNode.iterator();
             while (nodosIterator.hasNext()) {
                 RouteNode nodoAlmacenado = (RouteNode) nodosIterator.next();
@@ -106,7 +106,7 @@ public class Route {
                 }
             }
         }
-        System.out.println("Nodo no encontrado");
+        //System.out.println("Nodo no encontrado");
         return null;
 
     }
@@ -120,7 +120,7 @@ public class Route {
                 while (adyacentesIterator.hasNext()) {
                     Edge adyacente = (Edge) adyacentesIterator.next();
                     if (id == adyacente.getId()) {
-                        System.out.println("Nodo88: " + nodoAlmacenado.getId() + " Adyacente88: " + adyacente.getId());
+                        //System.out.println("Nodo88: " + nodoAlmacenado.getId() + " Adyacente88: " + adyacente.getId());
                         return nodoAlmacenado;
                     } else {
                         return null;
@@ -132,9 +132,9 @@ public class Route {
     public void setSingleNode(RouteNode node) {
         if (!this.nodeExist(node.getId())) {
             this.routeNode.add(node);
-//            System.out.println("Nodo con id: " + nodo.getId() + " insertado en el grafo");
+//            //System.out.println("Nodo con id: " + nodo.getId() + " insertado en el grafo");
         } else {
-            System.out.println("Este id de nodo ya existe");
+            //System.out.println("Este id de nodo ya existe");
         }
     }
         public boolean nodeExist(int id) {

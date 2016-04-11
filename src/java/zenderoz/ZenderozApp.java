@@ -2,22 +2,19 @@ package zenderoz;
 
 import estructuras.Path;
 import estructuras.Distance;
+import estructuras.GPSUnit;
 import estructuras.Graph;
 import estructuras.PlanResult;
 import estructuras.Route;
 import estructuras.Routes;
 import geocodificador.Geotagger;
 import geocodificador.Renderer;
-import java.awt.Image;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
-import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
 import manejador.Paths;
 import pathmanager.KmlHandler;
 import pathmanager.PathManager;
+import simulator.GPSProvider;
 
 /**
  *
@@ -32,11 +29,8 @@ public class ZenderozApp {
     private final Paths avenidas;
     private final Geotagger geoetiquetador;
     private final Renderer graficador;
-    private final String[] comboboxcalle;
-    private JScrollPane scrollPane;
-    private ImageIcon icon;
-    private Image image;
     private static ZenderozApp instance = null;
+    private final IGPSProvider provider;
     
     protected ZenderozApp() {
         manejadorKml = new KmlHandler();
@@ -46,15 +40,13 @@ public class ZenderozApp {
         avenidas = manejadorKml.loadAvenues();
         geoetiquetador = new Geotagger(calles, avenidas);
         graficador = new Renderer();
-        comboboxcalle = geoetiquetador.listAll(calles);
+        provider = new GPSProvider();
     }
     
     public static ZenderozApp getInstance() {
         
-        if(instance == null) {
+        if(instance == null)
             instance = new ZenderozApp();
-        }
-        
         return instance;
     }
     
@@ -117,11 +109,11 @@ public class ZenderozApp {
     public String[] getAvenues(String streetName) {                                           
         // TODO add your handling code here:
         String calleseleccionada = streetName;
-        System.out.println("CALLESELECT: " + calleseleccionada);
+        //System.out.println("CALLESELECT: " + calleseleccionada);
         ArrayList avenida = geoetiquetador.findStreetNodesList(calleseleccionada);
         Path av = new Path();
         av.setNodes(avenida);
-        System.out.println("AV SIZE: " + av.getNodes().size());
+        //System.out.println("AV SIZE: " + av.getNodes().size());
         ArrayList listaAvenidas = geoetiquetador.findSpot(av);
 //        Paths avenid = new Paths(listaAvenidas);
         String[] listadeAv = geoetiquetador.findIntersections(listaAvenidas);
@@ -140,14 +132,14 @@ public class ZenderozApp {
         String archivo = range.toString() + ".txt";
         int inicio = geoetiquetador.findStreetAvenueNodeID(start_av, start_street);
         int fin = geoetiquetador.findStreetAvenueNodeID(end_av, end_street);
-        System.out.println("INICIO: " + inicio + " FIN: " + fin);
+        //System.out.println("INICIO: " + inicio + " FIN: " + fin);
         PlanResult result = null;
 
         if (range != 0 && type != 0) {
             if (inicio != fin) {
-                System.out.println("Busqueda = " + range + " Inicio: " + inicio + " fin: " + fin);
+                //System.out.println("Busqueda = " + range + " Inicio: " + inicio + " fin: " + fin);
                 result = planificador(inicio, fin, range, type, archivo);
-                System.out.println("Archivo = " + archivo);
+                //System.out.println("Archivo = " + archivo);
             } else {
                 //Error "El punto de origen y destino son iguales"
             }
@@ -200,8 +192,12 @@ public class ZenderozApp {
         //this.jEditorPane1.setText(result);
         //this.jEditorPane2.setText(narration);
         //this.setVisible(true);
-        System.out.println("Printed GuiResult...");
+        //System.out.println("Printed GuiResult...");
         
         return new PlanResult(narration, result);
+    }
+    
+    public GPSUnit[] getUnits() {
+        return provider.getAllUnits();
     }
 }

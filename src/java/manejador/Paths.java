@@ -44,25 +44,25 @@ public class Paths {
     }
 
     public Path findPath(int id){
-        System.out.println("Buscando camino de ID: " + id);
+        //System.out.println("Buscando camino de ID: " + id);
         if(!paths.isEmpty()){
            Iterator caminosIterator = paths.iterator();
             while (caminosIterator.hasNext()) {
                 Path caminoAlmacenado = (Path) caminosIterator.next();
                 if (id == caminoAlmacenado.getId()){
-                    System.out.println("Camino encontrado");
+                    //System.out.println("Camino encontrado");
                     return caminoAlmacenado;
                 }
             }
         }
-        System.out.println("Camino no encontrado");
+        //System.out.println("Camino no encontrado");
         return null;
     }
 
     public void setSinglePath(Path camino){
        if (!this.pathExist(camino.getId())) {
            this.paths.add(camino);
-           System.out.println("Camino con id: " + camino.getId() + " insertado en la lista");
+           //System.out.println("Camino con id: " + camino.getId() + " insertado en la lista");
        }
        else
            System.out.println("Este id de camino ya existe");
@@ -82,7 +82,7 @@ public class Paths {
            Iterator caminosIterator = paths.iterator();
             while (caminosIterator.hasNext()) {
                 Path camino = (Path) caminosIterator.next();
-                System.out.println("  "+ camino.getName() + " " + camino.getNodes());
+                //System.out.println("  "+ camino.getName() + " " + camino.getNodes());
 
                 
        

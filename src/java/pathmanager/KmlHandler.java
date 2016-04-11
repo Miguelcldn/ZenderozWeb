@@ -86,8 +86,8 @@ public class KmlHandler {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document doc = docBuilder.parse(new File(userHome + fileSeparator + KML_FILE_NAME));
             Document docx = docBuilder.parse(new File(userHome + fileSeparator + ADJ_FILE_NAME));
-            System.out.println("Leyendo archivo Kml ubicado en: " + userHome + fileSeparator + KML_FILE_NAME);
-            System.out.println("Leyendo archivo TXT ubicado en: " + userHome + fileSeparator + ADJ_FILE_NAME);
+            //System.out.println("Leyendo archivo Kml ubicado en: " + userHome + fileSeparator + KML_FILE_NAME);
+            //System.out.println("Leyendo archivo TXT ubicado en: " + userHome + fileSeparator + ADJ_FILE_NAME);
             doc.getDocumentElement().normalize();
             docx.getDocumentElement().normalize();
 
@@ -144,8 +144,8 @@ public class KmlHandler {
             }
 
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            //System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            //System.out.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();
@@ -164,7 +164,7 @@ public class KmlHandler {
             DocumentBuilderFactory dBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dBuilderFactory.newDocumentBuilder();
             Document cll = dBuilder.parse(new File(userHome + fileSeparator + STREETS_FILE_NAME));
-            System.out.println("Leyendo archivo TXT ubicado en: " + userHome + fileSeparator + STREETS_FILE_NAME);
+            //System.out.println("Leyendo archivo TXT ubicado en: " + userHome + fileSeparator + STREETS_FILE_NAME);
             cll.getDocumentElement().normalize();
 
 
@@ -196,8 +196,8 @@ public class KmlHandler {
                 calles.setPaths(caminos);
             }
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            //System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            //System.out.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();
@@ -251,8 +251,8 @@ public class KmlHandler {
             }
 
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            //System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            //System.out.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();
@@ -311,8 +311,8 @@ public class KmlHandler {
 
             }
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            //System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            //System.out.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();
@@ -479,15 +479,15 @@ public class KmlHandler {
 
                         }
                         processed.setSingleRoute(ruta);
-                        System.out.println("Tamaño de preprocesadas.... " + processed.getRoutes().size());
+                        //System.out.println("Tamaño de preprocesadas.... " + processed.getRoutes().size());
                     }
                 }
 
             }
 
         } catch (SAXParseException err) {
-            System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
-            System.out.println(" " + err.getMessage());
+            //System.out.println("** Parsing error" + ", line " + err.getLineNumber() + ", uri " + err.getSystemId());
+            //System.out.println(" " + err.getMessage());
         } catch (SAXException e) {
             Exception x = e.getException();
             ((x == null) ? e : x).printStackTrace();

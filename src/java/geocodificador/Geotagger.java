@@ -110,7 +110,7 @@ public class Geotagger {
                     Iterator calleIterator = calle.getNodes().iterator();
                     while (calleIterator.hasNext()) {
                         int punto = (Integer) calleIterator.next();
-//                    System.out.println("AHORA AKI");
+//                    //System.out.println("AHORA AKI");
                         if (nodo == punto) {
                             ubicacion.add(calle.getName());
                             found = true;
@@ -132,9 +132,9 @@ public class Geotagger {
                 Iterator avIterator = avenue.getNodes().iterator();
                 while (avIterator.hasNext()) {
                     int avid = (Integer) avIterator.next();
-//                    System.out.println("AHORA AKI");
+//                    //System.out.println("AHORA AKI");
                     if (calleid == avid) {
-                        System.out.println("calle " + street);
+                        //System.out.println("calle " + street);
                         nodoid = calleid;
                     }
                 }

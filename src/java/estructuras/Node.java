@@ -64,10 +64,10 @@ public class Node {
     }
 
     public void printNode() {
-        System.out.println("IDNODO: " + this.id);
-        System.out.println("INDEX: " );
+        //System.out.println("IDNODO: " + this.id);
+        //System.out.println("INDEX: " );
         this.printEdges();
-        System.out.println(")");
+        //System.out.println(")");
     }
 
     public ArrayList getEdges() {
@@ -82,7 +82,7 @@ public class Node {
         if (this.edgeExists(edge.getId()) == false) {
             this.edges.add(edge);
         } else {
-//            System.out.println("id de adyacente ya existe");
+//            //System.out.println("id de adyacente ya existe");
         }
 
     }
@@ -119,7 +119,7 @@ public class Node {
 
     public void printEdges() {
         if (this.edges.isEmpty()) {
-            System.out.println("VACIO");
+            //System.out.println("VACIO");
         } else {
             Iterator adyacentesIterator = edges.iterator();
               while (adyacentesIterator.hasNext()) {

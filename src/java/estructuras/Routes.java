@@ -36,22 +36,22 @@ public class Routes {
         Iterator rutasTodas = this.routes.iterator();
         while (rutasTodas.hasNext()) {
             Route ruta = (Route) rutasTodas.next();
-            System.out.println("=====================");
-            System.out.println("Ruta ID: " + ruta.getId() + " Size: " + ruta.getRoutes().size());
+            //System.out.println("=====================");
+            //System.out.println("Ruta ID: " + ruta.getId() + " Size: " + ruta.getRoutes().size());
             ruta.printRoute();
 //            Iterator rutaIterator = ruta.getRoutes().iterator();
 //            while (rutaIterator.hasNext()) {
 //                NodoRuta nodo = (NodoRuta) rutaIterator.next();
-//                 System.out.println("Nodo: " + nodo.getId());
+//                 //System.out.println("Nodo: " + nodo.getId());
 //                Iterator adyacenteIterator = nodo.getAdyacent().iterator();
 //                while (adyacenteIterator.hasNext()) {
 //                    Adyacente adyacente = (Adyacente) adyacenteIterator.next();
-//                    System.out.println("        Adyacente: " + adyacente.getId());
-//                    System.out.println("        Peso: " + adyacente.getPeso());
+//                    //System.out.println("        Adyacente: " + adyacente.getId());
+//                    //System.out.println("        Peso: " + adyacente.getPeso());
 //
 //                }
 //            }
-            System.out.println("==========================");
+            //System.out.println("==========================");
 
         }
     }
@@ -69,9 +69,9 @@ public class Routes {
     public void setSingleRoute(Route ruta) {
         if (!this.routeExist(ruta.getId())) {
             this.routes.add(ruta);
-            System.out.println("RUTA con id: " + ruta.getId() + " insertado en las RUTAS");
+            //System.out.println("RUTA con id: " + ruta.getId() + " insertado en las RUTAS");
         } else {
-            System.out.println("Este id de ruta ya existe");
+            //System.out.println("Este id de ruta ya existe");
         }
     }
 
@@ -80,11 +80,11 @@ public class Routes {
         if (this.findRoute(id)!=null) {
             int index = this.getRoutes().indexOf(findRoute(id));
             this.getRoutes().set(index, newRoute);
-            System.out.println("Reemplazada!");
+            //System.out.println("Reemplazada!");
         } else {
             this.setSingleRoute(newRoute);
         }
-        System.out.println("mmmmmmmm");
+        //System.out.println("mmmmmmmm");
     }
 
     public Route findRoute(int routeID) {

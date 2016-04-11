@@ -46,6 +46,6 @@ public class Edge {
     }
 
     public void printEdge() {
-        System.out.println("(id: " + this.id + " peso: " + this.weight + ")");
+        //System.out.println("(id: " + this.id + " peso: " + this.weight + ")");
     }
 }

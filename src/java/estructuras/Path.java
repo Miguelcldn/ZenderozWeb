@@ -62,13 +62,13 @@ public class Path {
     public void setSingleNode(int node) {
 
         this.nodes.add(node);
-        System.out.println("Nodo con id: " + node + " insertado en el camino");
+        //System.out.println("Nodo con id: " + node + " insertado en el camino");
 
     }
 
     // ***************hacer bien este metodo**************
     public void printPath() {
-        System.out.println(" " + this.getNodes());
+        //System.out.println(" " + this.getNodes());
 
     }
 }

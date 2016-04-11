@@ -28,13 +28,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     Seleccione la ruta:
                     <select id="routeList" class="form-control">
                     </select>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    Seleccione el sentido:
+                    <select id="wayList" class="form-control" disabled>
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
                     Seleccione la parada a consultar:
                     <select id="stopList" class="form-control" disabled>
                     </select>
