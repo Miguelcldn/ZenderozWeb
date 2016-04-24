@@ -2,19 +2,19 @@ package zenderoz;
 
 import estructuras.Path;
 import estructuras.Distance;
-import estructuras.GPSUnit;
+import zenderozgps.GPSUnit;
 import estructuras.Graph;
 import estructuras.PlanResult;
 import estructuras.Route;
 import estructuras.Routes;
 import geocodificador.Geotagger;
 import geocodificador.Renderer;
+import gps.GPSManager;
 import java.util.ArrayList;
 import java.util.Iterator;
 import manejador.Paths;
 import pathmanager.KmlHandler;
 import pathmanager.PathManager;
-import simulator.GPSProvider;
 
 /**
  *
@@ -30,7 +30,7 @@ public class ZenderozApp {
     private final Geotagger geoetiquetador;
     private final Renderer graficador;
     private static ZenderozApp instance = null;
-    private final IGPSProvider provider;
+    private final GPSManager gpsManager;
     
     protected ZenderozApp() {
         manejadorKml = new KmlHandler();
@@ -40,7 +40,8 @@ public class ZenderozApp {
         avenidas = manejadorKml.loadAvenues();
         geoetiquetador = new Geotagger(calles, avenidas);
         graficador = new Renderer();
-        provider = new GPSProvider();
+        gpsManager = new GPSManager("localhost", 8989);
+        gpsManager.Start();
     }
     
     public static ZenderozApp getInstance() {
@@ -198,6 +199,6 @@ public class ZenderozApp {
     }
     
     public GPSUnit[] getUnits() {
-        return provider.getAllUnits();
+        return gpsManager.getUnits();
     }
 }

@@ -24,7 +24,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-5">
-                    <button type="button" id="planRoute" class="btn btn-lg btn-warning">Planear ruta</button>
+                    <button type="button" id="planRoute" class="btn btn-lg btn-warning">Planificar ruta</button>
                 </div>
             </div>
             <div class="row">

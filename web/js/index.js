@@ -11,6 +11,7 @@ var wayList, stopList, routeList;
 var mapStops = [];
 var mapBuses = null;
 var activeUpdate = false;
+var ETAMessage = null;
 
 
 $(document).ready(main);
@@ -26,6 +27,7 @@ function main() {
     
     routeList.change(onRouteListChanged);
     wayList.change(onWayListChanged);
+    stopList.change(onStopListChanged);
     
     window.clearSelect(routeList);
     window.clearSelect(stopList);
@@ -111,7 +113,16 @@ function onMarkerClick(e) {
     map.panTo(this.position);
     setTimeout(function() {
         map.setZoom(16);
+        computeETA(this);
     }, 500);
+}
+
+function onStopListChanged(e) {
+    if(stopList.val().toString() !== 'none') {
+        
+        var marker = mapStops[parseInt(stopList.val())];
+        onMarkerClick.call(marker);
+    }
 }
 
 function onWayListChanged(e) {
@@ -208,4 +219,17 @@ function updateUnits() {
             activeUpdate = false;
         }
     });
+}
+
+function computeETA(stop) {
+    
+    if(ETAMessage !== null) ETAMessage.close();
+    
+    var content = "<div>" +
+        "<strong>Tiempo estimado de llegada:</strong><br>" + 
+        "<span id='ETA'>Calculando</span>" +
+        "</div>";
+    
+    ETAMessage = new google.maps.InfoWindow({content : content});
+    ETAMessage.open(map, stop);
 }
