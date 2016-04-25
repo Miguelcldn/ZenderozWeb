@@ -23,7 +23,7 @@
  */
 package web;
 
-import zenderozgps.GPSUnit;
+import estructuras.GPSUnit;
 import estructuras.PlanResult;
 import java.io.IOException;
 import java.io.PrintWriter;

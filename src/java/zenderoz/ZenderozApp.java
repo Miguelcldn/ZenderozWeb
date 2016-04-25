@@ -2,7 +2,7 @@ package zenderoz;
 
 import estructuras.Path;
 import estructuras.Distance;
-import zenderozgps.GPSUnit;
+import estructuras.GPSUnit;
 import estructuras.Graph;
 import estructuras.PlanResult;
 import estructuras.Route;

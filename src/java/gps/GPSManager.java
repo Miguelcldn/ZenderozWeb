@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
-import zenderozgps.GPSUnit;
+import estructuras.GPSUnit;
 import java.util.TimerTask;
 import java.util.Timer;
 import java.util.HashMap;
@@ -82,7 +82,6 @@ public final class GPSManager extends TimerTask {
         
         HashMap<String, GPSUnit> newUnits = new HashMap<>();
         String content = response.replaceAll("\\{|\\}", "");
-        //content = content.replaceAll(":", ",");
         String[] unitsData = content.split(",");
         
         for(int i = 0; i < unitsData.length; i += 3) {
