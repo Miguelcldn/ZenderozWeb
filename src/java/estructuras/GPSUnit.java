@@ -27,34 +27,26 @@ package estructuras;
  *
  * @author Miguel Celedon
  */
-public class GPSUnit {
+public class GPSUnit extends GPSSpot {
     
     private double avgSpeed = 0;
     private int samples = 0;
     private double nextTargetDist;
     private static final double MAX_SAMPLES = 10;
-    public double Longitude;
-    public double Latitude;
-    public final String ID;
     private long routeID = 0;
     public static final double DEFAULT_PRECISION = 0.0001;
     
     public GPSUnit(String ID, long routeID) {
-        this.ID = ID;
+        super(ID);
         this.routeID = routeID;
     }
     
     public GPSUnit(String ID, double latitude, double longitude) {
-        
-        this.ID = ID;
-        this.Latitude = latitude;
-        this.Longitude = longitude;
+        super(ID, latitude, longitude);
     }
     
     public GPSUnit(String ID) {
-        this.ID = ID;
-        this.Longitude = 0;
-        this.Latitude = 0;
+        super(ID);
     }
     
     public double getAvgSpeed() {
@@ -62,15 +54,15 @@ public class GPSUnit {
     }
     
     public boolean Move(double newLat, double newLng, double msTime) {
-        double movedDistance = ComputeArcDistance(Latitude, Longitude, newLat, newLng);
+        double movedDistance = ComputeArcDistance(lat, lng, newLat, newLng);
         double frameSpeed = movedDistance / msTime;
         
         avgSpeed = (avgSpeed * samples + frameSpeed) / (samples + 1);
         
         if(samples < MAX_SAMPLES) samples++;
         
-        Latitude = newLat;
-        Longitude = newLng;
+        lat = newLat;
+        lng = newLng;
         
         nextTargetDist -= movedDistance;
         
@@ -92,8 +84,8 @@ public class GPSUnit {
     }
     
     public void setCoordinates(double lat, double lng) {
-        this.Latitude = lat;
-        this.Longitude = lng;
+        this.lat = lat;
+        this.lng = lng;
     }
 
     /**
@@ -111,7 +103,7 @@ public class GPSUnit {
     }
     
     public boolean isCloseEnough(double latitude, double longitude, double precision) {
-        return (Math.hypot(this.Latitude - latitude, this.Longitude - longitude) <= precision);
+        return (Math.hypot(this.lat - latitude, this.lng - longitude) <= precision);
     }
     
     public boolean isCloseEnough(double latitude, double longitude) {
@@ -120,10 +112,10 @@ public class GPSUnit {
     
     @Override
     public String toString() {
-        return "GPSUnit: {ID: "+ID+", Lat: "+Latitude+", Lng: "+Longitude+"}";
+        return "GPSUnit: {ID: "+this.getID()+", Lat: "+lat+", Lng: "+lng+"}";
     }
     
     public String JSONSerialize() {
-        return ID + ":{lat:" + Latitude + ",lng:" + Longitude + "}";
+        return this.getID() + ":{lat:" + lat + ",lng:" + lng + "}";
     }
 }

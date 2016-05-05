@@ -43,7 +43,7 @@ public final class GPSManager extends TimerTask {
     
     private final String server;
     private final int port;
-    private final HashMap<String, GPSUnit>[] units;
+    private final HashMap<String, GPSUnit> units;
     private final Timer timer;
     private final int UPDATE_RATE = 1000;
     private final DBManager dbManager;
@@ -51,10 +51,9 @@ public final class GPSManager extends TimerTask {
     public GPSManager(String server, int port) {
         this.server = server;
         this.port = port;
-        units = new HashMap[2];
-        units[0] = query();
+        units = query();
         timer = new Timer();
-        dbManager = new DBManager("");
+        dbManager = new DBManager(null);
     }
     
     public void Start() {
@@ -98,8 +97,15 @@ public final class GPSManager extends TimerTask {
     }
     
     private void update() {
-        this.units[1] = this.units[0];
-        this.units[0] = query();
+        HashMap<String, GPSUnit> newPositions = query();
+        
+        newPositions.keySet().stream().forEach((String id) -> {
+            
+            GPSUnit newPos = newPositions.get(id);
+            if(units.get(id).Move(newPos.lat, newPos.lng, UPDATE_RATE)) {
+                //update next stop
+            }
+        });
     }
 
     @Override
@@ -115,7 +121,7 @@ public final class GPSManager extends TimerTask {
         GPSUnit[] result;
         
         try {
-            Collection<GPSUnit> c = units[0].values();
+            Collection<GPSUnit> c = units.values();
             result = c.toArray(new GPSUnit[0]);
             return Arrays.copyOf(result, result.length);
         }

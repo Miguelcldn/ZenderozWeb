@@ -126,9 +126,9 @@ public class planRoute extends HttpServlet {
             if(!first) out.write(",");
                         
             out.write("{");
-            out.write("\"id\":\"" + u.ID + "\"");
-            out.write(",\"lat\":" + u.Latitude);
-            out.write(",\"lng\":" + u.Longitude);
+            out.write("\"id\":\"" + u.getID() + "\"");
+            out.write(",\"lat\":" + u.lat);
+            out.write(",\"lng\":" + u.lng);
             out.write("}");
             
             first = false;
