@@ -29,22 +29,26 @@ package estructuras;
  */
 public class GPSUnit {
     
-    private double avgSpeed;
-    private int samples;
+    private double avgSpeed = 0;
+    private int samples = 0;
     private double nextTargetDist;
     private static final double MAX_SAMPLES = 10;
     public double Longitude;
     public double Latitude;
     public final String ID;
+    private long routeID = 0;
     public static final double DEFAULT_PRECISION = 0.0001;
+    
+    public GPSUnit(String ID, long routeID) {
+        this.ID = ID;
+        this.routeID = routeID;
+    }
     
     public GPSUnit(String ID, double latitude, double longitude) {
         
         this.ID = ID;
         this.Latitude = latitude;
         this.Longitude = longitude;
-        avgSpeed = 0;
-        samples = 0;
     }
     
     public GPSUnit(String ID) {

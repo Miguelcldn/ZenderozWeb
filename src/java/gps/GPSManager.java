@@ -23,6 +23,7 @@
  */
 package gps;
 
+import db.DBManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,6 +46,7 @@ public final class GPSManager extends TimerTask {
     private final HashMap<String, GPSUnit>[] units;
     private final Timer timer;
     private final int UPDATE_RATE = 1000;
+    private final DBManager dbManager;
     
     public GPSManager(String server, int port) {
         this.server = server;
@@ -52,6 +54,7 @@ public final class GPSManager extends TimerTask {
         units = new HashMap[2];
         units[0] = query();
         timer = new Timer();
+        dbManager = new DBManager("");
     }
     
     public void Start() {
