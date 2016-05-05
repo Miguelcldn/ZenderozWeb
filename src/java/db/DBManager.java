@@ -40,12 +40,15 @@ import java.util.ArrayList;
 public class DBManager {
     
     private Connection conn;
+    private final String CONNECTION_STRING = "jdbc:mysql://localhost:3306/zenderozwebdb?user=root&password=300592";
     
     public DBManager(String connString) {
         try {
             // The newInstance() call is a work around for some
             // broken Java implementations
             Class.forName("com.mysql.jdbc.Driver").newInstance();
+            
+            if(connString == null) connString = CONNECTION_STRING;
 
             conn = DriverManager.getConnection(connString);
 
@@ -54,29 +57,12 @@ public class DBManager {
         }
     }
     
-    private ResultSet makeSelect(String fields, String table, String condition) {
+    private ResultSet makeSelect(String query) {
         ResultSet rs = null;
         Statement state = null;
-        String query = "";
-        boolean all = (fields == null || fields.isEmpty()),
-                conditioned = (condition != null && !condition.isEmpty());
         
         try {
             state = conn.createStatement();
-            
-            query += "SELECT ";
-            
-            if(all)
-                query += "*";
-            else
-                query += fields;
-            
-            query += " FROM " + table;
-            
-            if(conditioned)
-                query += " WHERE " + condition;
-            
-            query += ";";
             
             rs = state.executeQuery(query);
             
@@ -99,6 +85,31 @@ public class DBManager {
                 } catch (SQLException sqlEx) { } // ignore
             }
         }
+        
+        return rs;
+    }
+    
+    private ResultSet makeSelect(String fields, String table, String condition) {
+        ResultSet rs;
+        String query = "";
+        boolean all = (fields == null || fields.isEmpty()),
+                conditioned = (condition != null && !condition.isEmpty());
+        
+        query += "SELECT ";
+        
+        if(all)
+            query += "*";
+        else
+            query += fields;
+        
+        query += " FROM " + table;
+        
+        if(conditioned)
+            query += " WHERE " + condition;
+        
+        query += ";";
+        
+        rs = makeSelect(query);
         
         return rs;
     }
