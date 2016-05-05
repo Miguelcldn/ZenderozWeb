@@ -29,21 +29,81 @@ package estructuras;
  */
 public class GPSUnit {
     
+    private double avgSpeed;
+    private int samples;
+    private double nextTargetDist;
+    private static final double MAX_SAMPLES = 10;
     public double Longitude;
     public double Latitude;
     public final String ID;
     public static final double DEFAULT_PRECISION = 0.0001;
     
     public GPSUnit(String ID, double latitude, double longitude) {
+        
         this.ID = ID;
-        this.Longitude = longitude;
         this.Latitude = latitude;
+        this.Longitude = longitude;
+        avgSpeed = 0;
+        samples = 0;
     }
     
     public GPSUnit(String ID) {
         this.ID = ID;
         this.Longitude = 0;
         this.Latitude = 0;
+    }
+    
+    public double getAvgSpeed() {
+        return avgSpeed;
+    }
+    
+    public boolean Move(double newLat, double newLng, double msTime) {
+        double movedDistance = ComputeArcDistance(Latitude, Longitude, newLat, newLng);
+        double frameSpeed = movedDistance / msTime;
+        
+        avgSpeed = (avgSpeed * samples + frameSpeed) / (samples + 1);
+        
+        if(samples < MAX_SAMPLES) samples++;
+        
+        Latitude = newLat;
+        Longitude = newLng;
+        
+        nextTargetDist -= movedDistance;
+        
+        return nextTargetDist < 10;
+    }
+    
+    private static double ComputeArcDistance(double lat1, double lng1, double lat2, double lng2) {
+        double lat = Math.abs(lat1 - lat2) / 2;
+        double lng = Math.abs(lng1 - lng2) / 2;
+        double varAngle;
+        double earthMeanRadius = 6371008.8;
+        
+        lat = Math.pow(Math.sin(lat), 2);
+        lng = Math.pow(Math.sin(lng), 2);
+        
+        varAngle = 2 * Math.asin(lat + Math.cos(lat1) * Math.cos(lat2) * lng);
+        
+        return earthMeanRadius * varAngle;
+    }
+    
+    public void setCoordinates(double lat, double lng) {
+        this.Latitude = lat;
+        this.Longitude = lng;
+    }
+
+    /**
+     * @return the nextTargetDist
+     */
+    public double getNextTargetDist() {
+        return nextTargetDist;
+    }
+
+    /**
+     * @param nextTargetDist the nextTargetDist to set
+     */
+    public void setNextTargetDist(double nextTargetDist) {
+        this.nextTargetDist = nextTargetDist;
     }
     
     public boolean isCloseEnough(double latitude, double longitude, double precision) {
