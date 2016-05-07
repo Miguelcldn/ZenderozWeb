@@ -48,5 +48,12 @@ public class Schema {
             ROUTESTOP_ROUTE = "`Route_idRoute`",
             ROUTESTOP_STOP = "`Stop_idStop`",
             ROUTESTOP_ORDER = "`Order`",
-            ROUTESTOP_DISTANCE = "`Distance`";
+            ROUTESTOP_DISTANCE = "`Distance`",
+            RS_VIEW = DB + ".route_stops_view",
+            RS_IDROUTE = "`idRoute`",
+            RS_IDSTOP = "`idStop`",
+            RS_NAME = "`Name`",
+            RS_ORDER = "`Order`",
+            RS_LAT = "`Lat`",
+            RS_LNG = "`Lng`";
 }
