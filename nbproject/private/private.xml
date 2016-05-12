@@ -5,7 +5,11 @@
         <group>
             <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/gps/GPSManager.java</file>
             <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/zenderoz/ZenderozApp.java</file>
+            <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/estructuras/GPSSpot.java</file>
             <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/estructuras/GPSUnit.java</file>
+            <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/estructuras/RouteStop.java</file>
+            <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/estructuras/Stop.java</file>
+            <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/estructuras/BusRoute.java</file>
             <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/db/Schema.java</file>
             <file>file:/C:/Users/migue/Documents/ZenderozWeb/src/java/db/DBManager.java</file>
         </group>

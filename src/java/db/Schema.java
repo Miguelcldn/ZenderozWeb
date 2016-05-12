@@ -54,6 +54,7 @@ public class Schema {
             RS_IDSTOP = "`idStop`",
             RS_NAME = "`Name`",
             RS_ORDER = "`Order`",
+            RS_DISTANCE = "`Distance`",
             RS_LAT = "`Lat`",
             RS_LNG = "`Lng`";
 }

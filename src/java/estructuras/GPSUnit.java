@@ -23,6 +23,10 @@
  */
 package estructuras;
 
+import db.Schema;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author Miguel Celedon
@@ -32,21 +36,27 @@ public class GPSUnit extends GPSSpot {
     private double avgSpeed = 0;
     private int samples = 0;
     private double nextTargetDist;
+    private RouteStop nextTarget = null;
     private static final double MAX_SAMPLES = 10;
     private long routeID = 0;
-    public static final double DEFAULT_PRECISION = 0.0001;
+    public static final double DEFAULT_PRECISION = 10;
     
-    public GPSUnit(String ID, long routeID) {
+    public GPSUnit(long ID, long routeID) {
         super(ID);
         this.routeID = routeID;
     }
     
-    public GPSUnit(String ID, double latitude, double longitude) {
+    public GPSUnit(long ID, double latitude, double longitude) {
         super(ID, latitude, longitude);
     }
     
-    public GPSUnit(String ID) {
+    public GPSUnit(long ID) {
         super(ID);
+    }
+    
+    public GPSUnit(ResultSet rs) throws SQLException {
+        super(rs.getLong(Schema.BUS_IDBUS));
+        this.routeID = rs.getLong(Schema.BUS_ROUTEID);
     }
     
     public double getAvgSpeed() {
@@ -96,10 +106,15 @@ public class GPSUnit extends GPSSpot {
     }
 
     /**
-     * @param nextTargetDist the nextTargetDist to set
+     * @param target
      */
-    public void setNextTargetDist(double nextTargetDist) {
-        this.nextTargetDist = nextTargetDist;
+    public void setNextTarget(RouteStop target) {
+        this.nextTarget = target;
+        this.nextTargetDist = target.getDistance();
+    }
+    
+    public RouteStop getNextTarget() {
+        return nextTarget;
     }
     
     public boolean isCloseEnough(double latitude, double longitude, double precision) {
@@ -110,6 +125,10 @@ public class GPSUnit extends GPSSpot {
         return isCloseEnough(latitude, longitude, DEFAULT_PRECISION);
     }
     
+    public boolean isTargetKnown() {
+        return nextTarget != null;
+    }
+    
     @Override
     public String toString() {
         return "GPSUnit: {ID: "+this.getID()+", Lat: "+lat+", Lng: "+lng+"}";
@@ -117,5 +136,19 @@ public class GPSUnit extends GPSSpot {
     
     public String JSONSerialize() {
         return this.getID() + ":{lat:" + lat + ",lng:" + lng + "}";
+    }
+
+    /**
+     * @return the routeID
+     */
+    public long getRouteID() {
+        return routeID;
+    }
+
+    /**
+     * @param routeID the routeID to set
+     */
+    public void setRouteID(long routeID) {
+        this.routeID = routeID;
     }
 }

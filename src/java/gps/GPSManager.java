@@ -24,6 +24,7 @@
 package gps;
 
 import db.DBManager;
+import estructuras.BusRoute;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,6 +32,8 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
 import estructuras.GPSUnit;
+import estructuras.RouteStop;
+import estructuras.Stop;
 import java.util.TimerTask;
 import java.util.Timer;
 import java.util.HashMap;
@@ -47,6 +50,7 @@ public final class GPSManager extends TimerTask {
     private final Timer timer;
     private final int UPDATE_RATE = 1000;
     private final DBManager dbManager;
+    private final HashMap<Long, BusRoute> routes;
     
     public GPSManager(String server, int port) {
         this.server = server;
@@ -54,6 +58,7 @@ public final class GPSManager extends TimerTask {
         units = query();
         timer = new Timer();
         dbManager = new DBManager(null);
+        routes = dbManager.getRoutes();
     }
     
     public void Start() {
@@ -88,7 +93,7 @@ public final class GPSManager extends TimerTask {
         
         for(int i = 0; i < unitsData.length; i += 3) {
             
-            newUnits.put(unitsData[i], new GPSUnit(unitsData[i],
+            newUnits.put(unitsData[i], new GPSUnit(Long.parseLong(unitsData[i]),
                     Double.parseDouble(unitsData[i + 1]),
                     Double.parseDouble(unitsData[i + 2])));
         }
@@ -101,9 +106,25 @@ public final class GPSManager extends TimerTask {
         
         newPositions.keySet().stream().forEach((String id) -> {
             
-            GPSUnit newPos = newPositions.get(id);
-            if(units.get(id).Move(newPos.lat, newPos.lng, UPDATE_RATE)) {
-                //update next stop
+            GPSUnit newPos = newPositions.get(id),
+                    unit = units.get(id);
+            
+            if(unit.Move(newPos.lat, newPos.lng, UPDATE_RATE)) {
+                
+                RouteStop stop = unit.getNextTarget();
+                stop = routes.get(unit.getRouteID()).getNextStop(stop.getID());
+                unit.setNextTarget(stop);
+                
+            } else if(!unit.isTargetKnown()) {
+                
+                RouteStop[] stops = routes.get(unit.getRouteID()).getStops();
+                
+                for(RouteStop stop : stops) {
+                    if(unit.isCloseEnough(stop.lat, stop.lng)) {
+                        unit.setNextTarget(stop);
+                        break;
+                    }
+                }
             }
         });
     }

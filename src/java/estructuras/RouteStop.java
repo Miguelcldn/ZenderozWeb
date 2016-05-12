@@ -23,28 +23,48 @@
  */
 package estructuras;
 
+import db.Schema;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  *
  * @author Miguel Celedon
  */
-public class GPSSpot {
-    public double lat;
-    public double lng;
-    private final long ID;
+public class RouteStop extends Stop {
     
-    public GPSSpot(long ID) {
-        lat = 0;
-        lng = 0;
-        this.ID = ID;
+    private final long routeID;
+    private final int distance;
+    
+    public RouteStop(long ID, String name, double lat, double lng, long routeID, int distance) {
+        super(ID, name, lat, lng);
+        this.routeID = routeID;
+        this.distance = distance;
     }
     
-    public GPSSpot(long ID, double lat, double lng) {
-        this.lat = lat;
-        this.lng = lng;
-        this.ID = ID;
+    public RouteStop(Stop stop, long routeID, int distance) {
+        super(stop.getID(), stop.getName(), stop.lat, stop.lng);
+        this.routeID = routeID;
+        this.distance = distance;
     }
     
-    public long getID() {
-        return this.ID;
+    public RouteStop(ResultSet rs) throws SQLException {
+        super(rs.getLong(Schema.RS_IDSTOP), rs.getString(Schema.RS_NAME), rs.getDouble(Schema.RS_LAT), rs.getDouble(Schema.RS_LNG));
+        this.routeID = rs.getLong(Schema.RS_IDROUTE);
+        this.distance = rs.getInt(Schema.RS_DISTANCE);
+    }
+
+    /**
+     * @return the routeID
+     */
+    public long getRouteID() {
+        return routeID;
+    }
+
+    /**
+     * @return the distance
+     */
+    public int getDistance() {
+        return distance;
     }
 }

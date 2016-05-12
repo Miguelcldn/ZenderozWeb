@@ -31,7 +31,10 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import estructuras.GPSUnit;
+import estructuras.Stop;
+import estructuras.BusRoute;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -92,17 +95,10 @@ public class DBManager {
     private ResultSet makeSelect(String fields, String table, String condition) {
         ResultSet rs;
         String query = "";
-        boolean all = (fields == null || fields.isEmpty()),
-                conditioned = (condition != null && !condition.isEmpty());
+        fields = (fields == null || fields.isEmpty()) ? "*" : fields;
+        boolean conditioned = (condition != null && !condition.isEmpty());
         
-        query += "SELECT ";
-        
-        if(all)
-            query += "*";
-        else
-            query += fields;
-        
-        query += " FROM " + table;
+        query += "SELECT " + fields + " FROM " + table;
         
         if(conditioned)
             query += " WHERE " + condition;
@@ -117,13 +113,13 @@ public class DBManager {
     public GPSUnit[] getUnits() {
         ArrayList<GPSUnit> units = new ArrayList();
         ResultSet rs = makeSelect(null, Schema.BUS, null);
-        String unitID;
+        long unitID;
         long routeID;
         
         if(rs != null) {
             try {
                 while(rs.next()) {
-                    unitID = rs.getString(Schema.BUS_IDBUS);
+                    unitID = rs.getLong(Schema.BUS_IDBUS);
                     routeID = rs.getLong(Schema.BUS_ROUTEID);
                     
                     units.add(new GPSUnit(unitID, routeID));
@@ -134,5 +130,31 @@ public class DBManager {
         }
         
         return units.toArray(new GPSUnit[0]);
+    }
+    
+    public HashMap<Long, BusRoute> getRoutes() {
+        HashMap<Long, BusRoute> allRoutes = new HashMap<>();
+        Long currentID;
+        ArrayList<BusRoute> routes;
+        ResultSet rsRoutes;
+        ResultSet rsStops;
+        
+        try {
+            
+            rsRoutes = makeSelect(null, Schema.ROUTE, null);
+            
+            while(rsRoutes.next()) {
+                ArrayList<BusRoute> stops;
+                BusRoute busRoute = new BusRoute(rsRoutes);
+                
+                
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DBManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return allRoutes;
     }
 }

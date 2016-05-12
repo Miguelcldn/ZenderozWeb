@@ -23,6 +23,10 @@
  */
 package estructuras;
 
+import java.sql.ResultSet;
+import db.Schema;
+import java.sql.SQLException;
+
 /**
  *
  * @author Miguel Celedon
@@ -31,9 +35,14 @@ public class Stop extends GPSSpot {
     
     private final String name;
     
-    public Stop(String ID, String name, double lat, double lng) {
+    public Stop(long ID, String name, double lat, double lng) {
         super(ID, lat, lng);
         this.name = name;
+    }
+    
+    public Stop(ResultSet rs) throws SQLException {
+        super(rs.getLong(Schema.STOP_IDSTOP), rs.getLong(Schema.STOP_LAT), rs.getLong(Schema.STOP_LNG));
+        this.name = rs.getString(Schema.STOP_NAME);
     }
     
     public String getName() {
