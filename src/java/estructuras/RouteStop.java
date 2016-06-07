@@ -35,23 +35,27 @@ public class RouteStop extends Stop {
     
     private final long routeID;
     private final int distance;
+    private final int order;
     
-    public RouteStop(long ID, String name, double lat, double lng, long routeID, int distance) {
+    public RouteStop(long ID, String name, double lat, double lng, long routeID, int distance, int order) {
         super(ID, name, lat, lng);
         this.routeID = routeID;
         this.distance = distance;
+        this.order = order;
     }
     
-    public RouteStop(Stop stop, long routeID, int distance) {
+    public RouteStop(Stop stop, long routeID, int distance, int order) {
         super(stop.getID(), stop.getName(), stop.lat, stop.lng);
         this.routeID = routeID;
         this.distance = distance;
+        this.order = order;
     }
     
     public RouteStop(ResultSet rs) throws SQLException {
         super(rs.getLong(Schema.RS_IDSTOP), rs.getString(Schema.RS_NAME), rs.getDouble(Schema.RS_LAT), rs.getDouble(Schema.RS_LNG));
         this.routeID = rs.getLong(Schema.RS_IDROUTE);
         this.distance = rs.getInt(Schema.RS_DISTANCE);
+        this.order = rs.getInt(Schema.RS_ORDER);
     }
 
     /**
@@ -66,5 +70,9 @@ public class RouteStop extends Stop {
      */
     public int getDistance() {
         return distance;
+    }
+    
+    public int getOrder() {
+        return order;
     }
 }

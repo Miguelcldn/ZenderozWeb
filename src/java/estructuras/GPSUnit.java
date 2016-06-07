@@ -37,9 +37,11 @@ public class GPSUnit extends GPSSpot {
     private int samples = 0;
     private double nextTargetDist;
     private RouteStop nextTarget = null;
-    private static final double MAX_SAMPLES = 10;
     private long routeID = 0;
     public static final double DEFAULT_PRECISION = 10;
+    private static final double MAX_SAMPLES = 10;
+    private static final double EARTHMEANRADIUS = 6371008.8;
+    
     
     public GPSUnit(long ID, long routeID) {
         super(ID);
@@ -74,23 +76,26 @@ public class GPSUnit extends GPSSpot {
         lat = newLat;
         lng = newLng;
         
-        nextTargetDist -= movedDistance;
-        
-        return nextTargetDist < 10;
+        if(this.isTargetKnown()) {
+            nextTargetDist -= movedDistance;
+            return nextTargetDist < 10;
+        }
+        else {
+            return false;
+        }
     }
     
     private static double ComputeArcDistance(double lat1, double lng1, double lat2, double lng2) {
         double lat = Math.abs(lat1 - lat2) / 2;
         double lng = Math.abs(lng1 - lng2) / 2;
         double varAngle;
-        double earthMeanRadius = 6371008.8;
         
         lat = Math.pow(Math.sin(lat), 2);
         lng = Math.pow(Math.sin(lng), 2);
         
         varAngle = 2 * Math.asin(lat + Math.cos(lat1) * Math.cos(lat2) * lng);
         
-        return earthMeanRadius * varAngle;
+        return EARTHMEANRADIUS * varAngle;
     }
     
     public void setCoordinates(double lat, double lng) {
@@ -118,7 +123,8 @@ public class GPSUnit extends GPSSpot {
     }
     
     public boolean isCloseEnough(double latitude, double longitude, double precision) {
-        return (Math.hypot(this.lat - latitude, this.lng - longitude) <= precision);
+        double result = Math.hypot(this.lat - latitude, this.lng - longitude) * EARTHMEANRADIUS;
+        return (result <= precision);
     }
     
     public boolean isCloseEnough(double latitude, double longitude) {

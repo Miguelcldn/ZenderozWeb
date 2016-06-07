@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import estructuras.GPSUnit;
 import estructuras.RouteStop;
-import estructuras.Stop;
 import java.util.TimerTask;
 import java.util.Timer;
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public final class GPSManager extends TimerTask {
     
     private final String server;
     private final int port;
-    private final HashMap<String, GPSUnit> units;
+    private final HashMap<Long, GPSUnit> units;
     private final Timer timer;
     private final int UPDATE_RATE = 1000;
     private final DBManager dbManager;
@@ -55,19 +54,19 @@ public final class GPSManager extends TimerTask {
     public GPSManager(String server, int port) {
         this.server = server;
         this.port = port;
-        units = query();
         timer = new Timer();
         dbManager = new DBManager(null);
         routes = dbManager.getRoutes();
+        units = dbManager.getUnits();
     }
     
     public void Start() {
         timer.schedule(this, 0, UPDATE_RATE);
     }
     
-    public HashMap<String, GPSUnit> query() {
+    public HashMap<Long, GPSUnit> query() {
         
-        HashMap<String, GPSUnit> result;
+        HashMap<Long, GPSUnit> result;
         Socket socket;
         BufferedReader input;
         
@@ -85,15 +84,15 @@ public final class GPSManager extends TimerTask {
         return result;
     }
     
-    private HashMap<String, GPSUnit> processResponse(String response) {
+    private HashMap<Long, GPSUnit> processResponse(String response) {
         
-        HashMap<String, GPSUnit> newUnits = new HashMap<>();
+        HashMap<Long, GPSUnit> newUnits = new HashMap<>();
         String content = response.replaceAll("\\{|\\}", "");
         String[] unitsData = content.split(",");
         
         for(int i = 0; i < unitsData.length; i += 3) {
             
-            newUnits.put(unitsData[i], new GPSUnit(Long.parseLong(unitsData[i]),
+            newUnits.put(Long.parseLong(unitsData[i]), new GPSUnit(Long.parseLong(unitsData[i]),
                     Double.parseDouble(unitsData[i + 1]),
                     Double.parseDouble(unitsData[i + 2])));
         }
@@ -102,9 +101,9 @@ public final class GPSManager extends TimerTask {
     }
     
     private void update() {
-        HashMap<String, GPSUnit> newPositions = query();
+        HashMap<Long, GPSUnit> newPositions = query();
         
-        newPositions.keySet().stream().forEach((String id) -> {
+        newPositions.keySet().stream().forEach((Long id) -> {
             
             GPSUnit newPos = newPositions.get(id),
                     unit = units.get(id);
@@ -151,5 +150,9 @@ public final class GPSManager extends TimerTask {
         }
         
         return null;
+    }
+    
+    public BusRoute[] getRoutes() {
+        return routes.values().toArray(new BusRoute[0]);
     }
 }

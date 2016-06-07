@@ -1,5 +1,6 @@
 package zenderoz;
 
+import estructuras.BusRoute;
 import estructuras.Path;
 import estructuras.Distance;
 import estructuras.GPSUnit;
@@ -200,5 +201,9 @@ public class ZenderozApp {
     
     public GPSUnit[] getUnits() {
         return gpsManager.getUnits();
+    }
+    
+    public BusRoute[] getRoutes() {
+        return gpsManager.getRoutes();
     }
 }

@@ -23,8 +23,10 @@
  */
 package web;
 
+import estructuras.BusRoute;
 import estructuras.GPSUnit;
 import estructuras.PlanResult;
+import estructuras.RouteStop;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -71,7 +73,12 @@ public class planRoute extends HttpServlet {
                 case "/units":
                     getUnits(request, out);
                     break;
+                case "/routes":
+                    getRoutes(request, out);
+                    break;
             }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
     }
     
@@ -126,12 +133,55 @@ public class planRoute extends HttpServlet {
             if(!first) out.write(",");
                         
             out.write("{");
-            out.write("\"id\":\"" + u.getID() + "\"");
+            out.write("\"id\":" + u.getID() + "");
             out.write(",\"lat\":" + u.lat);
             out.write(",\"lng\":" + u.lng);
+            out.write(",\"avgSpeed\":" + u.getAvgSpeed());
+            out.write(",\"nextTargetDistance\":" + ((u.isTargetKnown()) ? u.getNextTargetDist() : "null"));
+            out.write(",\"routeID\":" + u.getRouteID());
+            out.write(",\"nextTargetID\":" + ((u.isTargetKnown()) ? u.getNextTarget().getID() : "null"));
             out.write("}");
             
             first = false;
+        }
+        
+        out.write("]");
+    }
+    
+    protected void getRoutes(HttpServletRequest request, PrintWriter out) {
+        
+        ZenderozApp app = ZenderozApp.getInstance();
+        BusRoute[] routes = app.getRoutes();
+        boolean firstRoute = true, firstStop = true;
+        
+        out.write("[");
+        
+        for(BusRoute route : routes) {
+            if(!firstRoute) out.write(",");
+            
+            out.write("{");
+            out.write("\"routeID\":" + route.getID());
+            out.write(",\"returnStop\":" + route.getReturnStopID());
+            out.write(",\"routeName\":\"" + route.getName() + "\"");
+            out.write(",\"stops\":[");
+            for(RouteStop stop : route.getStops()) {
+                if(!firstStop) out.write(",");
+                
+                out.write("{");
+                out.write("\"routeID\":" + stop.getRouteID());
+                out.write(",\"stopID\":" + stop.getID());
+                out.write(",\"stopName\":\"" + stop.getName() + "\"");
+                out.write(",\"stopOrder\":" + stop.getOrder());
+                out.write(",\"lat\":" + stop.lat);
+                out.write(",\"lng\":" + stop.lng);
+                out.write("}");
+                
+                firstStop = false;
+            }
+            out.write("]");
+            out.write("}");
+            
+            firstRoute = false;
         }
         
         out.write("]");

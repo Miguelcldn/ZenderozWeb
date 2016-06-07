@@ -3,12 +3,12 @@
 
 
 //Route data with stops
-var busRoutes = [];
+var busRoutes = {};
 var map;
 
 var wayList, stopList, routeList;
 
-var mapStops = [];
+var mapStops = {};
 var mapBuses = null;
 var activeUpdate = false;
 var ETAMessage = null;
@@ -45,14 +45,24 @@ function goToRoutePlanning() {
 function loadBusRoutes() {
     'use strict';
     
+    var findReturnPosition = function(route) {
+        for(var j = 0; j < route.stops.length; j++) {
+            if(route.stops[j].stopID === route.returnStop) {
+                route.returnStopPosition = j;
+                break;
+            }
+        }
+    };
     
-    $.get({url: "resources/busRoutes.json"})
+    $.get({url: "routes"})
     .done(function(routes) {
         
-        busRoutes = routes;
-        
-        for(var i = 0; i < busRoutes.length; i++) {
-            routeList.append("<option value=" + i + ">" + busRoutes[i].routeName + "</option>");
+        for(var i = 0; i < routes.length; i++) {
+            var routeID = routes[i].routeID;
+            
+            routeList.append("<option value=" + routeID + ">" + routes[i].routeName + "</option>");
+            busRoutes[routeID] = routes[i];
+            findReturnPosition(busRoutes[routeID]);
         }
     })
     .fail(function(xhr, error) {
@@ -67,22 +77,44 @@ function loadStops(routeID, way) {
     window.clearSelect(stopList);
     clearMarkers();
     
-    var stops = window.busRoutes[routeID].stops;
+    var busRoute = window.busRoutes[routeID];
+    var stops = busRoute.stops;
+    var start = 0,
+        end = busRoute.returnStopPosition;
     
-    for(var i = 0; i < stops.length; i++) {
-        if(stops[i][way].length !== 0) {
+    //Continue from second half is way is false
+    if(!way) {
+        start = end;
+        end = stops.length;
+    }
+    
+    for(var i = start; i < end; i++) {
+        
+        var stop = stops[i];
+        
+        stopList.append("<option value=" + stop.stopID + ">" + stop.stopName + "</option>");
+        drawStop(stop);
+        
+        /*if(stops[i][way].length !== 0) {
             stopList.append("<option value=" + i + ">" + stops[i][0] + "</option>");
             drawStop(stops[i], way);
-        }
+        }*/
     }
 }
 
 function clearMarkers() {
     
-    for(var i = 0; i < mapStops.length; i++)
-        mapStops[i].marker.setMap(null);
+    for(var stop in mapStops)
+        mapStops[stop].marker.setMap(null);
     
-    mapStops = [];
+    mapStops = {};
+}
+
+function clearUnits() {
+    for(var bus in mapBuses)
+        mapBuses[bus].marker.setMap(null);
+    
+    mapBuses = null;
 }
 
 function drawMap() {
@@ -94,33 +126,35 @@ function drawMap() {
     });
 }
 
-function drawStop(stop, way) {
+function drawStop(stop) {
     var marker = new google.maps.Marker({
         map : map,
         animation : google.maps.Animation.DROP,
-        title : stop[0],
+        title : stop.stopName,
         position : {
-            lat : stop[way][0],
-            lng : stop[way][1]
+            lat : stop.lat,
+            lng : stop.lng
         }
     });
     
-    marker.addListener('click', onMarkerClick);
-    mapStops.push(marker);
+    marker.addListener('click', function() {onMarkerClick.call(marker);});
+    mapStops[stop.stopID] = stop;
+    mapStops[stop.stopID].marker = marker;
 }
 
 function onMarkerClick(e) {
     map.panTo(this.position);
+    var self = this;
     setTimeout(function() {
         map.setZoom(16);
-        computeETA(this);
+        showETA(self);
     }, 500);
 }
 
 function onStopListChanged(e) {
     if(stopList.val().toString() !== 'none') {
         
-        var marker = mapStops[parseInt(stopList.val())];
+        var marker = mapStops[parseInt(stopList.val())].marker;
         onMarkerClick.call(marker);
     }
 }
@@ -133,10 +167,12 @@ function onWayListChanged(e) {
     if(way === 'none') {
         stopList.prop('disabled', 'disabled');
         window.clearSelect(stopList);
+        onStopListChanged();
+        clearMarkers();
     }
     else {
         stopList.prop('disabled', false);
-        loadStops(routeList.val(), way);
+        loadStops(routeList.val());
     }
 }
 
@@ -150,7 +186,11 @@ function onRouteListChanged(e) {
         stopList.prop('disabled', 'disabled');
         window.clearSelect(wayList);
         window.clearSelect(stopList);
+        onWayListChanged();
+        onStopListChanged();
+        
         activeUpdate = false;
+        clearUnits();
     }
     else {
         wayList.prop('disabled', false);
@@ -161,14 +201,16 @@ function onRouteListChanged(e) {
 }
 
 function loadWays(routeID) {
-    var start = busRoutes[routeID].stops[0][0],
-        end = busRoutes[routeID].stops[busRoutes[routeID].stops.length - 1][0];
+    var start = busRoutes[routeID].stops[0].stopName,
+        end = busRoutes[routeID].stops[busRoutes[routeID].returnStopPosition].stopName;
     
-    wayList.append("<option value='" + 1 + "'>" + start + " - " + end + "</option>");
-    wayList.append("<option value='" + 2 + "'>" + end + " - " + start + "</option>");
+    wayList.append("<option value='" + true + "'>" + start + " - " + end + "</option>");
+    wayList.append("<option value='" + false + "'>" + end + " - " + start + "</option>");
 }
 
 function updateUnits() {
+    
+    if(!activeUpdate) return;
     
     if(mapBuses === null)
         mapBuses = {};
@@ -177,23 +219,30 @@ function updateUnits() {
         url: 'units',
         success: function(list) {
             
-            var bus = null;
+            var bus = null,
+                marker;
 
             for(var i = 0; i < list.length; i++) {
                 bus = list[i];
                 var mapBus = mapBuses[bus.id];
                 
                 if(mapBus === undefined) {
+                    mapBuses[bus.id] = bus;
+                    mapBus = mapBuses[bus.id];
+                }
+                
+                if(mapBus.marker === undefined) {
+                    
                     
                     var icon = {
                         url : "resources/bus_logo.png",
                         scaledSize : new google.maps.Size(25, 25)
                     };
                     
-                    mapBus = new google.maps.Marker({
+                    marker = new google.maps.Marker({
                         clickable : false,
                         icon : icon,
-                        label : bus.id,
+                        title : bus.id + '',
                         map : map,
                         position : {
                             lat : bus.lat,
@@ -201,18 +250,18 @@ function updateUnits() {
                         }
                     });
                     
-                    mapBuses[bus.id] = mapBus;
+                    
+                    mapBuses[bus.id].marker = marker;
                 }
                 else {
-                    mapBus.setPosition({
+                    mapBus.marker.setPosition({
                         lat : bus.lat,
                         lng : bus.lng
                     });
                 }
             }
             
-            if(activeUpdate)
-                setTimeout(updateUnits, 1000);
+            setTimeout(updateUnits, 1000);
         },
         error: function(query, error) {
             window.alert("Error: " + error);
@@ -221,7 +270,7 @@ function updateUnits() {
     });
 }
 
-function computeETA(stop) {
+function showETA(stop) {
     
     if(ETAMessage !== null) ETAMessage.close();
     
@@ -232,4 +281,36 @@ function computeETA(stop) {
     
     ETAMessage = new google.maps.InfoWindow({content : content});
     ETAMessage.open(map, stop);
+    
+    var eta = $("#ETA");
+    
+    eta.text(computeETA(stop));
+}
+
+function computeETA(stop) {
+    
+    //Looking for the closest unit
+    var unit = null;
+    
+    for(var bus in mapBuses) {
+        
+        //if(unit && mapStops[unit.nextTargetID].stopOrder )
+        
+    }
+}
+
+function buildDistanceMatrix(stops) {
+    
+    var matrix = {},
+        accum = 0;
+    
+    for(var origin in stops) {
+        
+        accum = 0;
+        
+        
+        for(var destiny in stops) {
+            
+        }
+    }
 }

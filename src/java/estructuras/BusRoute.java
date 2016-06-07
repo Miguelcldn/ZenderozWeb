@@ -96,7 +96,9 @@ public class BusRoute {
     
     public RouteStop getNextStop(long pastID) {
         for(int i = 0; i < stops.length; i++) {
-            if(stops[i].getID() == ID)
+            long actualID = stops[i].getID();
+            
+            if(actualID == pastID)
                 return stops[i + 1];
         }
         
