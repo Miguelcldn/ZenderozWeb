@@ -206,4 +206,8 @@ public class ZenderozApp {
     public BusRoute[] getRoutes() {
         return gpsManager.getRoutes();
     }
+    
+    public Object[] getClosestUnit(long routeID, long stopID) {
+        return gpsManager.getClosestUnit(routeID, stopID);
+    }
 }

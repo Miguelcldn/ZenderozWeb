@@ -155,4 +155,47 @@ public final class GPSManager extends TimerTask {
     public BusRoute[] getRoutes() {
         return routes.values().toArray(new BusRoute[0]);
     }
+    
+    private double getDistance(GPSUnit unit, BusRoute route, int stopPosition) {
+        
+        if(!unit.isTargetKnown()) return Double.MAX_VALUE;
+        
+        RouteStop[] stops = route.getStops();
+        int nextTargetPosition = route.getStopPosition(unit.getNextTarget().getID());
+        double distance = unit.getNextTargetDist();
+        int maxJumps = 0;
+        
+        while(nextTargetPosition != stopPosition && maxJumps < stops.length) {
+            
+            nextTargetPosition = (nextTargetPosition + 1) % stops.length;
+            distance += stops[nextTargetPosition].getDistance();
+            maxJumps++;
+        }
+        
+        if(maxJumps == stops.length) distance = Double.MAX_VALUE;
+        
+        return distance;
+    }
+    
+    public Object[] getClosestUnit(long routeID, long stopID) {
+        double distance = Double.MAX_VALUE;
+        BusRoute route = routes.get(routeID);
+        int stopPosition = route.getStopPosition(stopID);
+        GPSUnit bestUnit = null;
+        
+        for(GPSUnit unit : units.values()) {
+            if(unit.getRouteID() == routeID){
+                
+                double currentDistance = getDistance(unit, route, stopPosition);
+                
+                if(currentDistance < distance) {
+                    distance = currentDistance;
+                    bestUnit = unit;
+                }
+                
+            }
+        }
+        
+        return new Object[]{bestUnit, distance};
+    }
 }

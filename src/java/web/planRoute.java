@@ -76,6 +76,9 @@ public class planRoute extends HttpServlet {
                 case "/routes":
                     getRoutes(request, out);
                     break;
+                case "/distance":
+                    getDistance(request, out);
+                    
             }
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -185,6 +188,29 @@ public class planRoute extends HttpServlet {
         }
         
         out.write("]");
+    }
+    
+    protected void getDistance(HttpServletRequest request, PrintWriter out) {
+        ZenderozApp app = ZenderozApp.getInstance();
+        
+        try {
+            long routeID = Long.parseLong(request.getParameter("routeid"));
+            long stopID = Long.parseLong(request.getParameter("stopid"));
+
+            Object[] bestUnit = app.getClosestUnit(routeID, stopID);
+            double distance = (double)(bestUnit[1]);
+            GPSUnit unit = (GPSUnit)(bestUnit[0]);
+
+            if(distance != Double.MAX_VALUE) {
+                out.write("{\"distance\":" + distance);
+                out.write(",\"unitID\":" + unit.getID() + "}");
+            }
+            else {
+                out.write("{\"error\":\"Could not find any unit or stop\"");
+            }
+        } catch(Exception e) {
+            out.write("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

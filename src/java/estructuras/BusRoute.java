@@ -99,10 +99,19 @@ public class BusRoute {
             long actualID = stops[i].getID();
             
             if(actualID == pastID)
-                return stops[i + 1];
+                return stops[(i + 1)];
         }
         
         return null;
+    }
+    
+    public int getStopPosition(long ID) {
+        for(int i = 0; i < stops.length; i++) {
+            if(stops[i].getID() == ID)
+                return i;
+        }
+        
+        return -1;
     }
 
     /**

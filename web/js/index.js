@@ -12,6 +12,7 @@ var mapStops = {};
 var mapBuses = null;
 var activeUpdate = false;
 var ETAMessage = null;
+var selectedStop = null;
 
 
 $(document).ready(main);
@@ -137,14 +138,15 @@ function drawStop(stop) {
         }
     });
     
-    marker.addListener('click', function() {onMarkerClick.call(marker);});
+    marker.addListener('click', function() {onMarkerClick.call(stop);});
     mapStops[stop.stopID] = stop;
     mapStops[stop.stopID].marker = marker;
 }
 
 function onMarkerClick(e) {
-    map.panTo(this.position);
+    map.panTo(this.marker.position);
     var self = this;
+    stopList.val(this.stopID);
     setTimeout(function() {
         map.setZoom(16);
         showETA(self);
@@ -154,8 +156,8 @@ function onMarkerClick(e) {
 function onStopListChanged(e) {
     if(stopList.val().toString() !== 'none') {
         
-        var marker = mapStops[parseInt(stopList.val())].marker;
-        onMarkerClick.call(marker);
+        var stop = mapStops[parseInt(stopList.val())];
+        onMarkerClick.call(stop);
     }
 }
 
@@ -172,7 +174,7 @@ function onWayListChanged(e) {
     }
     else {
         stopList.prop('disabled', false);
-        loadStops(routeList.val());
+        loadStops(routeList.val(), way === 'true');
     }
 }
 
@@ -243,6 +245,7 @@ function updateUnits() {
                         clickable : false,
                         icon : icon,
                         title : bus.id + '',
+                        label : bus.id + '',
                         map : map,
                         position : {
                             lat : bus.lat,
@@ -254,10 +257,13 @@ function updateUnits() {
                     mapBuses[bus.id].marker = marker;
                 }
                 else {
-                    mapBus.marker.setPosition({
+                    marker = mapBuses[bus.id].marker;
+                    marker.setPosition({
                         lat : bus.lat,
                         lng : bus.lng
                     });
+                    //mapBuses[bus.id] = bus;
+                    //mapBuses[bus.id].marker = marker;
                 }
             }
             
@@ -280,37 +286,37 @@ function showETA(stop) {
         "</div>";
     
     ETAMessage = new google.maps.InfoWindow({content : content});
-    ETAMessage.open(map, stop);
+    ETAMessage.open(map, stop.marker);
     
-    var eta = $("#ETA");
+    selectedStop = stop;
+    updateETA(stop);
     
-    eta.text(computeETA(stop));
 }
 
-function computeETA(stop) {
-    
-    //Looking for the closest unit
-    var unit = null;
-    
-    for(var bus in mapBuses) {
-        
-        //if(unit && mapStops[unit.nextTargetID].stopOrder )
-        
-    }
-}
-
-function buildDistanceMatrix(stops) {
-    
-    var matrix = {},
-        accum = 0;
-    
-    for(var origin in stops) {
-        
-        accum = 0;
-        
-        
-        for(var destiny in stops) {
+function updateETA(stop) {
+    var error = function(response) {};
+    var success = function(response) {
+        if(response.distance) {
+            var seconds = response.distance / mapBuses[response.unitID].avgSpeed;
+            var date = new Date(null);
+            date.setSeconds(Math.floor(seconds));
+            var time = date.toISOString().substr(11, 8);
             
+            $("#ETA").text(time);
+            
+            if(selectedStop.stopID === stop.stopID)
+                setTimeout(function() { updateETA(stop); }, 5000);
+        } else {
+            error(response);
+            if(selectedStop.stopID === stop.stopID)
+                setTimeout(function() { updateETA(stop); }, 5000);
         }
-    }
+    };
+    
+    $.ajax({
+        url: "distance?routeid=" + stop.routeID + "&stopid=" + stop.stopID,
+        method: "GET",
+        success: success,
+        error: error
+    });
 }

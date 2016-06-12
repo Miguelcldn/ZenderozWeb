@@ -11,6 +11,7 @@
         <url-pattern>/streets</url-pattern>
         <url-pattern>/units</url-pattern>
         <url-pattern>/routes</url-pattern>
+        <url-pattern>/distance</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
