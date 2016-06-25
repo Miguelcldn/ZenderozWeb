@@ -110,8 +110,11 @@ public final class GPSManager extends TimerTask {
             
             if(unit.Move(newPos.lat, newPos.lng, UPDATE_RATE)) {
                 
+                
                 RouteStop stop = unit.getNextTarget();
+                System.out.println("Unit " + unit.getID() + " reached stop " + stop.getName());
                 stop = routes.get(unit.getRouteID()).getNextStop(stop.getID());
+                System.out.println("New Target for unit " + unit.getID() + " is stop " + stop.getName());
                 unit.setNextTarget(stop);
                 
             } else if(!unit.isTargetKnown()) {
@@ -120,6 +123,7 @@ public final class GPSManager extends TimerTask {
                 
                 for(RouteStop stop : stops) {
                     if(unit.isCloseEnough(stop.lat, stop.lng)) {
+                        System.out.println("Unit " + unit.getID() + " found near the stop " + stop.getName());
                         unit.setNextTarget(stop);
                         break;
                     }

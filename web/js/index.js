@@ -262,8 +262,8 @@ function updateUnits() {
                         lat : bus.lat,
                         lng : bus.lng
                     });
-                    //mapBuses[bus.id] = bus;
-                    //mapBuses[bus.id].marker = marker;
+                    mapBuses[bus.id] = bus;
+                    mapBuses[bus.id].marker = marker;
                 }
             }
             

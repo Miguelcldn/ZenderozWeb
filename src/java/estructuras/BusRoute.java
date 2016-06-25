@@ -99,7 +99,7 @@ public class BusRoute {
             long actualID = stops[i].getID();
             
             if(actualID == pastID)
-                return stops[(i + 1)];
+                return stops[(i + 1) % stops.length];
         }
         
         return null;
