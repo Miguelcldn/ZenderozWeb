@@ -38,7 +38,7 @@ public class GPSUnit extends GPSSpot {
     private double nextTargetDist;
     private RouteStop nextTarget = null;
     private long routeID = 0;
-    public static final double DEFAULT_PRECISION = 50;
+    public static final double DEFAULT_PRECISION = 100;
     private static final double MAX_SAMPLES = 10;
     private static final double EARTHMEANRADIUS = 6371008.8;
     
@@ -73,14 +73,16 @@ public class GPSUnit extends GPSSpot {
         
         if(samples < MAX_SAMPLES) samples++;
         
+        //System.out.println("Unit "+ this.getID()+" moved ("+movedDistance+" metters), distance: "+nextTargetDist+ ((nextTarget != null) ? (", eucDist: "+ComputeArcDistance(newLat, newLng, nextTarget.lat, nextTarget.lng)+", stop: " + nextTarget.getName()) : ""));
+        
         lat = newLat;
-        lng = newLng;
+        lng = newLng; 
         
         if(this.isTargetKnown()) {
             nextTargetDist -= movedDistance;
             if(nextTargetDist < 0) nextTargetDist = 1;
             
-            return (nextTargetDist < DEFAULT_PRECISION && isCloseEnough(nextTarget.lat, nextTarget.lng));
+            return isCloseEnough(nextTarget.lat, nextTarget.lng); //(nextTargetDist < 100);// && ;
         }
         else {
             return false;
@@ -127,7 +129,7 @@ public class GPSUnit extends GPSSpot {
     }
     
     public boolean isCloseEnough(double latitude, double longitude, double precision) {
-        double result = Math.hypot(this.lat - latitude, this.lng - longitude) * EARTHMEANRADIUS;
+        double result = ComputeArcDistance(this.lat, this.lng, latitude, longitude);
         return (result <= precision);
     }
     
