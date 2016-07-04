@@ -72,7 +72,7 @@ public class KmlHandler {
 //</editor-fold>
     
     public KmlHandler() {
-        this.userHome = System.getProperty("user.home");
+        this.userHome = ""; //System.getProperty("user.home");
         this.fileSeparator = System.getProperty("file.separator");
         this.fakeIDCount = 0;
         this.transportID = 1000;
