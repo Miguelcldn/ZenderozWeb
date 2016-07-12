@@ -36,6 +36,7 @@ public class GPSUnit extends GPSSpot {
     private double avgSpeed = 0;
     private int samples = 0;
     private double nextTargetDist;
+    private double eucNextTargetDist;
     private RouteStop nextTarget = null;
     private long routeID = 0;
     public static final double DEFAULT_PRECISION = 100;
@@ -69,10 +70,12 @@ public class GPSUnit extends GPSSpot {
         double movedDistance = ComputeArcDistance(lat, lng, newLat, newLng);
         double frameSpeed = movedDistance / (msTime / 1000);
         
-        avgSpeed = (avgSpeed * samples + frameSpeed) / (samples + 1);
-        
-        if(samples < MAX_SAMPLES) samples++;
-        
+        if(frameSpeed >= 0.69) //If speed is half of a human walk, register it
+        {
+            avgSpeed = (avgSpeed * samples + frameSpeed) / (samples + 1);
+
+            if(samples < MAX_SAMPLES) samples++;
+        }
         //System.out.println("Unit "+ this.getID()+" moved ("+movedDistance+" metters), distance: "+nextTargetDist+ ((nextTarget != null) ? (", eucDist: "+ComputeArcDistance(newLat, newLng, nextTarget.lat, nextTarget.lng)+", stop: " + nextTarget.getName()) : ""));
         
         lat = newLat;
@@ -82,7 +85,9 @@ public class GPSUnit extends GPSSpot {
             nextTargetDist -= movedDistance;
             if(nextTargetDist < 0) nextTargetDist = 1;
             
-            return isCloseEnough(nextTarget.lat, nextTarget.lng); //(nextTargetDist < 100);// && ;
+            eucNextTargetDist = ComputeArcDistance(lat, lng, nextTarget.lat, nextTarget.lng);
+            
+            return eucNextTargetDist <= DEFAULT_PRECISION; //(nextTargetDist < 100);// && ;
         }
         else {
             return false;
@@ -113,7 +118,7 @@ public class GPSUnit extends GPSSpot {
      * @return the nextTargetDist
      */
     public double getNextTargetDist() {
-        return nextTargetDist;
+        return (nextTarget != null) ? Math.max(nextTargetDist, eucNextTargetDist) : nextTargetDist;
     }
 
     /**
